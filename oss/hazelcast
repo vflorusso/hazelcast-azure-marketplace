@@ -64,5 +64,8 @@ echo "install_hazelcast"
 ./install_hazelcast $MIN_HEAP_SIZE $MAX_HEAP_SIZE $CLUSTER_VERSION
 
 echo "Starting hazelcast-server"
-cp ./hazelcast-server.conf /etc/init/
+# service for upstart
+cp ./hazelcast-server.conf /etc/init/ 2>>/dev/null
+# service for systemd 
+cp ./hazelcast-server.service /lib/systemd/system/ 2>>/dev/null
 service hazelcast-server start
