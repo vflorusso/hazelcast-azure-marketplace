@@ -133,7 +133,7 @@
     },
     "templateBaseUrl": {
       "type": "string",
-      "defaultValue": "https://raw.githubusercontent.com/7erry/azure-quickstart-templates/master/hazelcast-vm-cluster/",
+      "defaultValue": "https://raw.githubusercontent.com/hazelcast/hazelcast-azure-marketplace/master/oss",
       "metadata": {
         "description": "The base URL for the bootstrap files",
         "artifactsBaseUrl": "Base URL to be replaced by marketplace storage."
@@ -184,6 +184,7 @@
     "StorageapiVersion": "2016-01-01",
     "bootstrapFiles": [
       "[concat(parameters('templateBaseUrl'), '/bootstrap_hazelcast')]",
+      "[concat(parameters('templateBaseUrl'), '/hazelcast')]",
       "[concat(parameters('templateBaseUrl'), '/hazelcast-server.conf')]",
       "[concat(parameters('templateBaseUrl'), '/hazelcast.xml')]",
       "[concat(parameters('templateBaseUrl'), '/install_hazelcast')]",
