@@ -33,12 +33,12 @@ if __name__ == "__main__":
             ## Loading the root parser
             tree = ET.parse(opts.filename)    
             root = tree.getroot()
-        
-            ## Finding and replacing the old group tag with the new one
+           
+	    # update license key
             for key in root.iter(str(QName(hazelcast_ns, "license-key"))):
-                key.find("hazelcast_ns:license-key", ns).text = opts.license_key
-            print("Updated license key...")
-            
+                key.text = opts.license_key
+            print("Updated license key...") 
+
 	    ## Finding and replacing the old group tag with the new one
             for group in root.iter(str(QName(hazelcast_ns, "group"))):
                 group.find("hazelcast_ns:name", ns).text = opts.cluster_name
