@@ -5,18 +5,19 @@
     <img src="http://armviz.io/visualizebutton.png"/>
 </a>
 
-[Hazelcast](https://hazelcast.com) is an in-memory data platform which can support a variety of data applications such as data grids, nosql data stores, caching and web session clustering.
+[Hazelcast](https://hazelcast.com) is an in-memory data platform which can support a variety of data applications such as data grids, NoSQL data stores, caching and web session clustering.
 
-This template will deploy any number of Ubuntu Hazelcast nodes in a vnet using the [official Hazlecast Azure Discovery Provider](https://github.com/hazelcast/hazelcast-azure). Every node is installed with Hazelcast as an [upstart service](http://upstart.ubuntu.com/) and will continue to run even after subsequent restarts. Each node will discover every other node on the network automatically so you can add and remove nodes as you see fit.
+This template will deploy any number of Ubuntu Hazelcast nodes in a VNet (Azure Virtual Network) using the [official Hazelcast Azure Discovery Provider](https://github.com/hazelcast/hazelcast-azure). Every node is installed with Hazelcast as an [upstart service](http://upstart.ubuntu.com/) and will continue to run even after subsequent restarts. Each node will discover every other node on the network automatically so you can add and remove nodes as you see fit.
 
 Use the **Deploy to Azure** button above to get started.
 
 Checkout Hazelcast's [official documentation](http://hazelcast.org/documentation/) to learn more on how to use Hazelcast.
 
 ## Azure Quickstart Guide
+
 Hazelcast on Microsoft Azure Quick Start Guide
 
-Getting started with Hazlecast on Microsift Azure is as simple as four steps:
+Getting started with Hazelcast on Microsoft Azure is as simple as four steps:
 
 ### 1. Basics
 
@@ -61,7 +62,7 @@ Virtual machine size:	The size of each virtual machine for the Hazelcast Grid
 
 
 
-Verify request summary. Here you can also choose to download the template parameterized json file in order to store for future reference or even use with theAzure Command Line Interface:
+Verify request summary. Here you can also choose to download the template parameterized json file in order to store for future reference or even use with the Azure Command Line Interface:
 
 ### 4. Deploy
 
@@ -71,12 +72,14 @@ Verify request summary. Here you can also choose to download the template parame
 Buy and deploy. Here you will be presented with Hazelcast Terms of use and privacy policy and upon agreement your Hazelcast Cluster will begin deployment:
 
 ### Inside the deployment
+
 If you wish to investigate the deployment on any of the nodes simply login using the credentials you configured. Once you login to a node you can observe the waagent in action. waagent (Microsoft Azure Linux Agent) begins the orchestration for the downloading, configuration, and startup of Hazelcast.
 
 
-Once the installation is completed you’ll observe a process id as the final statement in the waagent.log located:
+Once the installation is completed you’ll observe a process ID as the final statement in the waagent.log located:
 
 /var/lib/waagent/Microsoft.OSTCExtensions.CustomScriptForLinux-1.5.2.0/download/0
+
 So what just happened? waagent downloaded and invoked the Hazelcast solution template to each machine. Then the solution template took the parameters from the deployment and executed a series of scripts:
 
 bootstrap
