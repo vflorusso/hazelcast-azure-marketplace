@@ -1,0 +1,5 @@
+#! /bin/bash
+# Provided by azure extension which comes from template parameters
+# nohub / background the hazelcast installation due to timeout issues with waagent
+chmod a+x ./hazelcast
+nohup ./hazelcast $1 $2 $3 $4 $5 $6 $7 &>/dev/null & 

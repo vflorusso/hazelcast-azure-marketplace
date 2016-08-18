@@ -1,0 +1,61 @@
+{
+  "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": 
+  {
+    "adminUserName": {
+      "value": "admin123"
+    },
+    "authenticationType": {
+      "value": "password"
+    },
+    "adminPassword": {
+      "value": "Admin123123"
+    },
+    "clusterUserName": {
+      "value": "hzuser"
+    },
+    "clusterPassword": {
+      "value": "hzpass"
+    },
+    "licenseKey": {
+      "value": "ENTERPRISE_HD#10Nodes#KNjlykbrFTuf6VwaJ1S07IUEAm5HO6701600101110111190919000811090"
+    },
+    "clusterVersion": {
+      "value": "3.6.2"
+    },
+    "customJar": {
+      "value": ""
+    },
+    "storageAccountNewOrExisting": {
+      "value": "new"
+    },
+    "storageAccountName": {
+      "value": "hzstore"
+    },
+    "storageAccountType": {
+      "value": "Standard_LRS"
+    },
+    "existingStorageAccountRG": {
+      "value": "testRG"
+    },
+    "vmSize": {
+      "value": "Standard_D1"
+    },
+    "instanceCount": {
+      "value": 3
+    },
+    "publicIPAddressName": {
+      "value": "hazelcast"
+    },
+    "dnsPrefix": {
+      "value": "rockandroll"
+    },
+    "publicIPNewOrExisting": {
+      "value": "new"
+    },
+    "location": {
+      "value": "westus"
+    }
+  }
+}

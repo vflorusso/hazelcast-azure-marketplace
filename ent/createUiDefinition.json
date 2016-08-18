@@ -1,0 +1,302 @@
+{
+    "handler": "Microsoft.Compute.MultiVm",
+    "version": "0.0.1-preview",
+    "parameters": {
+        "basics": [
+            {
+                "name": "adminUsername",
+                "type": "Microsoft.Compute.UserNameTextBox",
+                "label": "Username",
+                "toolTip": "Username for hazelcast VMs.",
+                "osPlatform": "Linux"
+            },
+            {
+                "name": "SSHCredentials",
+                "type": "Microsoft.Compute.CredentialsCombo",
+                "label": {
+                    "authenticationType": "Authentication type",
+                    "password": "Password",
+                    "confirmPassword": "Confirm password",
+                    "sshPublicKey": "SSH public key"
+                },
+                "toolTip": {
+                    "authenticationType": "",
+                    "password": "",
+                    "sshPublicKey": ""
+                },
+                "constraints": {
+                    "required": true
+                },
+                "options": {
+                    "hideConfirmation": false
+                },
+                "osPlatform": "Linux"
+            }
+        ],
+        "steps": [
+            {
+                "name": "infrastructureConfig",
+                "label": "Infrastructure settings",
+                "subLabel": {
+                    "preValidation": "Configure the infrastructure settings",
+                    "postValidation": "Done"
+                },
+                "bladeTitle": "Infrastructure settings",
+                "elements": [
+                    {
+                        "name": "licenseKey",
+                        "type": "Microsoft.Compute.TextBox",
+                        "label": "License",
+                        "toolTip": "License Key for Enterprise to be installed. For a trial key: https://hazelcast.com/hazelcast-enterprise-download/trial/",
+                        "constraints": {
+                            "required": true
+                        },
+                        "osPlatform": "Linux"
+                    },
+                    {
+                        "name": "clusterVersion",
+                        "type": "Microsoft.Common.DropDown",
+                        "label": "Hazelcast Version",
+                        "defaultValue": "3.6.4",
+                        "toolTip": "",
+                        "constraints": {
+                            "allowedValues": [
+                                {
+                                    "label": "3.7",
+                                    "value": "3.7"
+                                },
+                                {
+                                    "label": "3.6.4",
+                                    "value": "3.6.4"
+                                },
+                                {
+                                    "label": "3.6.3",
+                                    "value": "3.6.3"
+                                },
+                                {
+                                    "label": "3.6.2",
+                                    "value": "3.6.2"
+                                },
+                                {
+                                    "label": "3.6.1",
+                                    "value": "3.6.1"
+                                },
+                                {
+                                    "label": "3.6",
+                                    "value": "3.6"
+                                },
+                                {
+                                    "label": "3.5.5",
+                                    "value": "3.5.5"
+                                },
+                                {
+                                    "label": "3.5.4",
+                                    "value": "3.5.4"
+                                },
+                                {
+                                    "label": "3.5.3",
+                                    "value": "3.5.3"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "name": "customJar",
+                        "type": "Microsoft.Common.FileUpload",
+                        "label": "Custom Jar",
+                        "toolTip": "",
+                        "constraints": {
+                            "required": false,
+                            "accept": ".jar"
+                        },
+                        "options": {
+                            "multiple": false,
+                            "uploadMode": "url",
+                            "openMode": "binary",
+                            "encoding": "UTF-8"
+                        }
+                    },
+                    {
+                        "name": "vmCount",
+                        "type": "Microsoft.Common.DropDown",
+                        "label": "Number of VMs",
+                        "defaultValue": "3",
+                        "toolTip": "",
+                        "constraints": {
+                            "allowedValues": [
+                                {
+                                    "label": "2",
+                                    "value": 2
+                                },
+                                {
+                                    "label": "3",
+                                    "value": 3
+                                },
+                                {
+                                    "label": "6",
+                                    "value": 6
+                                },
+                                {
+                                    "label": "12",
+                                    "value": 12
+                                },
+                                {
+                                    "label": "24",
+                                    "value": 24
+                                },
+                                {
+                                    "label": "48",
+                                    "value": 48
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "name": "clusterUserName",
+                        "type": "Microsoft.Common.TextBox",
+                        "label": "Hazelcast User Name",
+                        "toolTip": "Please specify the user name for the Hazelcast cluster.",
+                        "constraints": {
+                            "required": true
+                        }
+                    },
+                    {
+                        "name": "clusterPassword",
+                        "type": "Microsoft.Common.PasswordBox",
+                        "label": {
+                            "password": "Password",
+                            "confirmPassword": "Confirm password"
+                        },
+                        "toolTip": "Please specify the password for the Hazelcast cluster.",
+                        "constraints": {
+                            "required": true,
+                            "regex": "^[a-z0-9]{3,24}$",
+                            "validationMessage": "Cluster password must be between 3 and 24 characters long, and can contain only numbers and lowercase letters."
+                        },
+                        "options": {
+                            "hideConfirmation": false
+                        }
+                    },
+                    {
+                        "name": "storageAccount",
+                        "type": "Microsoft.Storage.StorageAccountSelector",
+                        "label": "Storage account",
+                        "defaultValue": {
+                            "type": "Standard_LRS"
+                        },
+                        "constraints": {
+                            "required": true,
+                            "allowedTypes": ["Standard_LRS", "Standard_GRS", "Standard_RAGRS"]
+                        }
+                    },
+                    {
+                        "name": "ubuntuOSVersion",
+                        "type": "Microsoft.Common.DropDown",
+                        "label": "ubuntuOSVersion",
+                        "toolTip": "",
+                        "defaultValue": "14.04.2-LTS",
+                        "constraints": {
+                        "allowedValues": [
+                                {
+                                    "label": "14.04.2-LTS",
+                                    "value": "14.04.2-LTS"
+                                },
+                                {
+                                    "label": "14.04.4-LTS",
+                                    "value": "14.04.4-LTS"
+                                },
+                                {
+                                    "label": "15.10",
+                                    "value": "15.10"
+                                },
+                                {
+                                    "label": "16.04.0-LTS",
+                                    "value": "16.04.0-LTS"
+                                }
+                            ]
+			}
+                    },
+                    {
+                        "name": "vmSize",
+                        "type": "Microsoft.Compute.SizeSelector",
+                        "label": "Virtual machine size",
+                        "toolTip": "The size of the virtual machine for the domain controller.",
+                        "defaultValue": "Standard_D1",
+                        "recommendedSizes": [
+                            "Standard_D1",
+                            "Standard_D2",
+                            "Standard_D3"
+                        ],
+                        "constraints": {
+                            "allowedSizes": [
+                                "Standard_D1",
+                                "Standard_D2",
+                                "Standard_D3",
+                                "Standard_D4",
+                                "Standard_D11",
+                                "Standard_D12",
+                                "Standard_D13",
+                                "Standard_D14",
+                                "Standard_D1_v2",
+                                "Standard_D2_v2",
+                                "Standard_D3_v2",
+                                "Standard_D4_v2",
+                                "Standard_D11_v2",
+                                "Standard_D12_v2",
+                                "Standard_D13_v2",
+                                "Standard_D14_v2"
+                            ]
+                        },
+                        "osPlatform": "Linux",
+                        "count": "[steps('infrastructureConfig').vmCount]"
+                    },
+                    {
+                        "name": "dnsAndPublicIP",
+                        "type": "Microsoft.Network.PublicIpAddressCombo",
+                        "label": {
+                            "publicIpAddress": "Public IP address",
+                            "domainNameLabel": "DNS Prefix"
+                        },
+                        "toolTip": {
+                            "domainNameLabel": "DNS Prefix for the VM public IP addresses."
+                        },
+                        "constraints": {
+                            "required": {
+                                "domainNameLabel": true
+                            }
+                        },
+                        "defaultValue": {
+                            "publicIpAddressName": "hazelcast",
+                            "domainNameLabel": ""
+                        },
+                        "options": {
+                            "hideNone": true
+                        }
+                    }
+                ]
+            }
+        ],
+        "outputs": {
+            "adminUserName": "[basics('adminUsername')]",
+            "authenticationType": "[basics('SSHCredentials').authenticationType]",
+            "adminPassword": "[basics('SSHCredentials').password]",
+            "sshPublicKey": "[basics('SSHCredentials').sshPublicKey]",
+            "licenseKey": "[steps('infrastructureConfig').licenseKey]",
+            "clusterUserName": "[steps('infrastructureConfig').clusterUserName]",
+            "clusterPassword": "[steps('infrastructureConfig').clusterPassword]",
+            "clusterVersion": "[steps('infrastructureConfig').clusterVersion]",
+            "customJar": "[steps('infrastructureConfig').customJar]",
+            "storageAccountNewOrExisting": "[steps('infrastructureConfig').storageAccount.newOrExisting]",
+            "storageAccountName": "[steps('infrastructureConfig').storageAccount.name]",
+            "storageAccountType": "[steps('infrastructureConfig').storageAccount.type]",
+            "ubuntuOSVersion": "[steps('infrastructureConfig').ubuntuOSVersion]",
+            "existingStorageAccountRG": "[steps('infrastructureConfig').storageAccount.resourceGroup]",
+            "vmSize": "[steps('infrastructureConfig').vmSize]",
+            "instanceCount": "[steps('infrastructureConfig').vmCount]",
+            "publicIPAddressName": "[steps('infrastructureConfig').dnsAndPublicIP.name]",
+            "dnsPrefix": "[steps('infrastructureConfig').dnsAndPublicIP.domainNameLabel]",
+            "publicIPNewOrExisting": "[steps('infrastructureConfig').dnsAndPublicIP.newOrExistingOrNone]",
+            "location": "[location()]"
+        }
+    }
+}

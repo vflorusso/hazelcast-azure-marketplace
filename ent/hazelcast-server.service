@@ -1,0 +1,9 @@
+[Unit]
+Description=Hazelcast In-Memory Data Grid
+
+[Service]
+WorkingDirectory=/var/hazelcast
+ExecStart=/usr/bin/mvn -f /var/hazelcast/pom.xml exec:java
+StandardOutput=syslog
+StandardError=syslog
+
