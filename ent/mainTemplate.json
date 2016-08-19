@@ -195,6 +195,8 @@
       "[concat(parameters('templateBaseUrl'), '/hazelcast-server.service')]",
       "[concat(parameters('templateBaseUrl'), '/hazelcast.xml')]",
       "[concat(parameters('templateBaseUrl'), '/install_hazelcast')]",
+      "[concat(parameters('templateBaseUrl'), '/download')]",
+      "[concat(parameters('templateBaseUrl'), '/hazelcast-server.conf')]",
       "[concat(parameters('templateBaseUrl'), '/logging.properties')]",
       "[concat(parameters('templateBaseUrl'), '/modify_configuration')]",
       "[concat(parameters('templateBaseUrl'), '/pom.xml')]"
