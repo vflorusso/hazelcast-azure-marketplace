@@ -13,33 +13,6 @@ CLUSTER_VERSION=$3
 export CLUSTER_VERSION
 sh -c 'echo "CLUSTER_VERSION=$CLUSTER_VERSION" >> /etc/environment'
 
-#### minimum heap size
-MIN_HEAP_SIZE=`free | grep Mem | awk '{ printf(($2/1000000)*.20) }'`
-if [ "x$MIN_HEAP_SIZE" = "x" ]
- then
-   MIN_HEAP_SIZE=4G
-fi
-export MIN_HEAP_SIZE
-sh -c 'echo "MIN_HEAP_SIZE=$MIN_HEAP_SIZE" >> /etc/environment'
-
-MAX_HEAP_SIZE=`free | grep Mem | awk '{ printf($2/1000000) }'`
-if [ "x$MAX_HEAP_SIZE" = "x" ]
- then
-  MAX_HEAP_SIZE=4G
-fi
-export MAX_HEAP_SIZE
-sh -c 'echo "MAX_HEAP_SIZE=$MAX_HEAP_SIZE" >> /etc/environment'
-
-if [ "x$MIN_HEAP_SIZE" != "x" ]; then
-  JAVA_OPTS="$JAVA_OPTS -Xms${MIN_HEAP_SIZE}g"
-fi
-if [ "x$MAX_HEAP_SIZE" != "x" ]; then
-  JAVA_OPTS="$JAVA_OPTS -Xms${MAX_HEAP_SIZE}g"
-fi
-export JAVA_OPTS
-# persist this variable to the VM environment
-sh -c 'echo "JAVA_OPTIONS=$JAVA_OPTS" >> /etc/environment'
-
 CLUSTER_SIZE=$4
 CUSTOM_JAR=$5
 LICENSEKEY=$6
@@ -61,7 +34,7 @@ chmod +x modify_configuration
 echo "modify_configuration"
 ./modify_configuration --license-key=$LICENSEKEY --cluster-name=$CLUSTER_NAME --cluster-password=$CLUSTER_PASSWORD --cluster-version=$CLUSTER_VERSION --cluster-size=$CLUSTER_SIZE --filename=hazelcast.xml
 echo "install_hazelcast"
-./install_hazelcast $MIN_HEAP_SIZE $MAX_HEAP_SIZE $CLUSTER_VERSION
+./install_hazelcast $CLUSTER_VERSION
 
 echo "Starting hazelcast-server"
 # service for upstart

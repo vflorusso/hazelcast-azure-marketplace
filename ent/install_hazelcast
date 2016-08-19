@@ -1,11 +1,39 @@
-#! /bin/bash
-
 #assumes root/sudo user
-apt-get update -y
-apt-get install default-jdk -y
-apt-get install maven -y
-mvn install
+###apt-get update -y
+###apt-get install default-jdk -y
+
+#### minimum heap size
+MIN_HEAP_SIZE=`free | grep Mem | awk '{ printf(($2/1000000)*.20) }'`
+if [ "x$MIN_HEAP_SIZE" = "x" ]
+ then
+   MIN_HEAP_SIZE=4G
+fi
+export MIN_HEAP_SIZE
+sh -c 'echo "MIN_HEAP_SIZE=$MIN_HEAP_SIZE" >> /etc/environment'
+
+MAX_HEAP_SIZE=`free | grep Mem | awk '{ printf($2/1000000) }'`
+if [ "x$MAX_HEAP_SIZE" = "x" ]
+ then
+  MAX_HEAP_SIZE=4G
+fi
+export MAX_HEAP_SIZE
+sh -c 'echo "MAX_HEAP_SIZE=$MAX_HEAP_SIZE" >> /etc/environment'
+
+if [ "x$MIN_HEAP_SIZE" != "x" ]; then
+  JAVA_OPTS="$JAVA_OPTS -Xms${MIN_HEAP_SIZE}g"
+fi
+if [ "x$MAX_HEAP_SIZE" != "x" ]; then
+  JAVA_OPTS="$JAVA_OPTS -Xms${MAX_HEAP_SIZE}g"
+fi
+export JAVA_OPTS
+# persist this variable to the VM environment
+sh -c 'echo "JAVA_OPTIONS=$JAVA_OPTS" >> /etc/environment'
 
 #/var/hazelcast is created in bootstrap
-cp pom.xml /var/hazelcast
-cp ./hazelcast.xml /var/hazelcast/
+CLUSTER_VERSION=$1
+chmod a+x ./download
+./download $CLUSTER_VERSION
+echo "MIN_HEAP_SIZE=$MIN_HEAP_SIZE" | cat - /var/hazelcast/bin/start.sh > /var/hazelcast/bin/temp && mv /var/hazelcast/bin/temp /var/hazelcast/bin/start.sh
+echo "MAX_HEAP_SIZE=$MAX_HEAP_SIZE" | cat - /var/hazelcast/bin/start.sh > /var/hazelcast/bin/temp && mv /var/hazelcast/bin/temp /var/hazelcast/bin/start.sh
+cp ./hazelcast.xml /var/hazelcast/bin
+
