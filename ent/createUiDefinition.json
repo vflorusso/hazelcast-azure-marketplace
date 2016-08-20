@@ -45,7 +45,7 @@
                 "elements": [
                     {
                         "name": "licenseKey",
-                        "type": "Microsoft.Compute.TextBox",
+                        "type": "Microsoft.Common.TextBox",
                         "label": "License",
                         "toolTip": "License Key for Enterprise to be installed. For a trial key: https://hazelcast.com/hazelcast-enterprise-download/trial/",
                         "constraints": {
