@@ -28,3 +28,5 @@ if [ "$VERSION" = "3.6.4" ] || [ "$VERSION" = "3.6.5" ]
     echo "$VERSION is an unknown version please check http://download.hazelcast.com/enterprise/"
 fi
 
+chmod a+x /var/hazelcast/mancenter/*sh
+chmod a+x /var/hazelcast/bin/*sh
