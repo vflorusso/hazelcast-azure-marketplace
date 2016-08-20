@@ -1,6 +1,6 @@
 #assumes root/sudo user
-###apt-get update -y
-###apt-get install default-jdk -y
+apt-get update -y
+apt-get install default-jdk -y
 
 #### minimum heap size
 MIN_HEAP_SIZE=`free | grep Mem | awk '{ printf(($2/1000000)*.20) }'`
