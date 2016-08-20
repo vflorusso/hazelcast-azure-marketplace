@@ -33,8 +33,8 @@ sh -c 'echo "JAVA_OPTIONS=$JAVA_OPTS" >> /etc/environment'
 CLUSTER_VERSION=$1
 chmod a+x ./download
 ./download $CLUSTER_VERSION
-echo "MIN_HEAP_SIZE=$MIN_HEAP_SIZE" | cat - /var/hazelcast/bin/start.sh > /var/hazelcast/bin/temp && mv /var/hazelcast/bin/temp /var/hazelcast/bin/start.sh
-echo "MAX_HEAP_SIZE=$MAX_HEAP_SIZE" | cat - /var/hazelcast/bin/start.sh > /var/hazelcast/bin/temp && mv /var/hazelcast/bin/temp /var/hazelcast/bin/start.sh
+echo "MIN_HEAP_SIZE=$MIN_HEAP_SIZEg" | cat - /var/hazelcast/bin/start.sh > /var/hazelcast/bin/temp && mv /var/hazelcast/bin/temp /var/hazelcast/bin/start.sh
+echo "MAX_HEAP_SIZE=$MAX_HEAP_SIZEg" | cat - /var/hazelcast/bin/start.sh > /var/hazelcast/bin/temp && mv /var/hazelcast/bin/temp /var/hazelcast/bin/start.sh
 chmod a+x /var/hazelcast/bin/start.sh
 cp ./hazelcast.xml /var/hazelcast/bin
 
