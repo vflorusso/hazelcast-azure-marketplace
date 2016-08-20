@@ -14,7 +14,7 @@ filename = " "
 if __name__ == "__main__":
 
     parser = OptionParser()
-    parser.add_option("-n","--license-key",dest="license_key") 
+    parser.add_option("-k","--license-key",dest="license_key") 
     parser.add_option("-n","--cluster-name",dest="cluster_name") 
     parser.add_option("-p","--cluster-password",dest="cluster_password")
     parser.add_option("-v","--cluster-version",dest="cluster_version")
