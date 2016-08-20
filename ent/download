@@ -17,6 +17,7 @@ if [ "$VERSION" = "3.6.4" ] || [ "$VERSION" = "3.6.5" ]
     rm -rf ./hazelcast-enterprise-3.6.4.tar.gz
     rm -rf ./home
     cp -R `pwd`/hazelcast-enterprise-3.6.4/* /var/hazelcast
+    chmod a+x /var/hazelcast/bin/*sh
   elif [ "$VERSION" = "3.7" ] ||[ "$VERSION" = "3.6.3" ] || [ "$VERSION" = "3.6.2" ] || [ "$VERSION" = "3.6.1" ] || [ "$VERSION" = "3.6" ]
   then
     # 3.6 - 3.7
@@ -24,9 +25,7 @@ if [ "$VERSION" = "3.6.4" ] || [ "$VERSION" = "3.6.5" ]
     tar -xvzf hazelcast-enterprise-$VERSION.tar.gz
     rm -rf ./hazelcast-enterprise-$VERSION.tar.gz
     cp -R `pwd`/hazelcast-enterprise-$VERSION/* /var/hazelcast
+    chmod a+x /var/hazelcast/bin/*sh
   else
     echo "$VERSION is an unknown version please check http://download.hazelcast.com/enterprise/"
 fi
-
-chmod a+x /var/hazelcast/mancenter/*sh
-chmod a+x /var/hazelcast/bin/*sh
