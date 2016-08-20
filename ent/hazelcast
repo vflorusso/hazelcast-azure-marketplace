@@ -14,8 +14,8 @@ export CLUSTER_VERSION
 sh -c 'echo "CLUSTER_VERSION=$CLUSTER_VERSION" >> /etc/environment'
 
 CLUSTER_SIZE=$4
-CUSTOM_JAR=$5
-LICENSEKEY=$6
+LICENSEKEY=$5
+CUSTOM_JAR=$6
 
 echo "Creating /var/hazelcast"
 mkdir /var/hazelcast

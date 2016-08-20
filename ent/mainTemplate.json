@@ -398,7 +398,7 @@
           "fileUris": "[variables('bootstrapFiles')]"
         },
         "protectedSettings": {
-          "commandToExecute": "[concat('sh bootstrap_hazelcast ', parameters('clusterUserName'), ' ', parameters('clusterPassword'), ' ', parameters('clusterVersion'), ' ', parameters('instanceCount'), ' ', parameters('customJar'), ' ', parameters('licenseKey') )]"
+          "commandToExecute": "[concat('sh bootstrap_hazelcast ', parameters('clusterUserName'), ' ', parameters('clusterPassword'), ' ', parameters('clusterVersion'), ' ', parameters('instanceCount'), ' ', parameters('licenseKey'), ' ', parameters('customJar') )]"
         }
       },
       "copy": {
