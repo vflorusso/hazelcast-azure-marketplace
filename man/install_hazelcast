@@ -1,0 +1,10 @@
+#assumes root/sudo user
+apt-get update -y
+apt-get install default-jdk -y
+
+CLUSTER_VERSION=$1
+chmod a+x ./download
+./download $CLUSTER_VERSION
+chmod a+x /var/hazelcast/mancenter/startManCenter.sh
+cp ./hazelcast.xml /var/hazelcast/bin
+
