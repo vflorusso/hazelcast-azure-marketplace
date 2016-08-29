@@ -2,173 +2,109 @@
   "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
-    "adminUserName": {
-      "type": "string",
-      "metadata": {
-        "description": "Username for hazelcast VMs"
-      }
-    },
-    "adminPassword": {
-      "type": "securestring",
-      "defaultValue": "",
-      "metadata": {
-        "description": "Password for hazelcast VMs, if authenticationType is set to 'password'"
-      }
-    },
-    "sshPublicKey": {
-      "type": "string",
-      "defaultValue": "",
-      "metadata": {
-        "description": "SSH Public key for hazelcast VMs, if authenticationType is set to 'sshPublicKey'"
-      }
-    },
-    "authenticationType": {
-      "type": "string",
-      "metadata": {
-        "description": "Authentication method for logging into Hazelcast VMs."
-      },
-      "allowedValues": [
-        "password",
-        "sshPublicKey"
-      ]
-    },
-    "licenseKey":{
-      "type": "string",
-      "metadata": {
-        "description": "License Key for Enterprise to be installed. For a trial key: https://hazelcast.com/hazelcast-enterprise-download/trial/"
-      }
-    },
-    "clusterVersion": {
-      "type": "string",
-      "metadata": {
-        "description": "Hazelcast Version to deploy."
-      }
-    },
-    "dnsPrefix": {
-      "type": "string",
-      "defaultValue": "",
-      "metadata": {
-        "description": "Unique DNS Name for the Public IP used to access the Virtual Machine."
-      }
-    },
-    "instanceCount": {
-      "type": "int",
-      "defaultValue": "1",
-      "metadata": {
-        "description": "The number of hazelcast nodes in the grid"
-      }
-    },
-    "vmSize": {
-      "type": "string",
-      "metadata": {
-        "description": "The size of each instance VM"
-      }
-    },
-    "ubuntuOSVersion": {
-      "type": "string",
-      "defaultValue": "14.04.2-LTS",
-      "metadata": {
-        "description": "The Ubuntu version for deploying the Docker containers. This will pick a fully patched image of this given Ubuntu version. Allowed values: 14.04.2-LTS, 14.04-DAILY, 15.04"
-      },
-      "allowedValues": [
-        "14.04.2-LTS",
-        "14.04.4-LTS",
-        "15.10",
-        "16.04.0-LTS"
-      ]
-    },
-    "storageAccountNewOrExisting": {
-      "type": "string",
-      "defaultValue": "",
-      "metadata": {
-        "description": ""
-      }
-    },
-    "storageAccountName": {
-      "type": "string",
-      "defaultValue": "",
-      "metadata": {
-        "description": ""
-      }
-    },
-    "storageAccountType": {
-      "type": "string",
-      "defaultValue": "",
-      "metadata": {
-        "description": ""
-      }
-    },
-    "existingStorageAccountRG": {
-      "type": "string",
-      "defaultValue": "",
-      "metadata": {
-        "description": ""
-      }
-    },
-    "publicIPAddressName": {
-      "type": "string"
-    },
-    "publicIPNewOrExisting": {
-      "type": "string"
-    },
-    "location": {
-      "type": "string",
-      "defaultValue": "",
-      "metadata": {
-        "description": ""
-      }
-    },
-    "templateBaseUrl": {
+"templateBaseUrl": {
       "type": "string",
       "defaultValue": "https://raw.githubusercontent.com/hazelcast/hazelcast-azure-marketplace/master/man",
       "metadata": {
         "description": "The base URL for the bootstrap files",
         "artifactsBaseUrl": "Base URL to be replaced by marketplace storage."
+  }
+},
+"authenticationType": {
+"type": "string"
+},
+"licenseKey": {
+"type": "string"
+},
+"clusterVersion": {
+"type": "string"
+},
+"storageAccountNewOrExisting": {
+"type": "string"
+},
+"storageAccountName": {
+"type": "string"
+},
+"storageAccountType": {
+"type": "string"
+},
+"existingStorageAccountRG": {
+"type": "string"
+},
+"vmSize": {
+"type": "string"
+},
+"dnsPrefix": {
+"type": "string"
+},
+"publicIPNewOrExisting": {
+"type": "string"
+},
+"location": {
+"type": "string"
+},
+
+    "adminUsername": {
+      "type": "string",
+      "metadata": {
+        "description": "User name for the Virtual Machine."
+      }
+    },
+    "adminPassword": {
+      "type": "securestring",
+      "metadata": {
+        "description": "Password for the Virtual Machine."
+      }
+    },
+    "publicIPAddressName": {
+      "type": "string",
+      "metadata": {
+        "description": "Unique DNS Name for the Public IP used to access the Virtual Machine."
+      }
+    },
+    "ubuntuOSVersion": {
+      "type": "string",
+      "defaultValue": "14.04.2-LTS",
+      "allowedValues": [
+        "12.04.5-LTS",
+        "14.04.2-LTS",
+        "15.10"
+      ],
+      "metadata": {
+        "description": "The Ubuntu version for the VM. This will pick a fully patched image of this given Ubuntu version. Allowed values: 12.04.5-LTS, 14.04.2-LTS, 15.10."
       }
     }
   },
   "variables": {
+"authenticationType": "",
+"licenseKey": "",
+"clusterVersion": "",
+"storageAccountNewOrExisting": "",
+"storageAccountName": "",
+"storageAccountType": "",
+"existingStorageAccountRG": "",
+"vmSize": "",
+"publicIPAddressName": "",
+"dnsPrefix": "",
+"publicIPNewOrExisting": "",
+"location": "",
+
     "imagePublisher": "Canonical",
-    "newStorageAccountName": "[concat(uniqueString(resourceGroup().id), 'hazelcast')]",
     "imageOffer": "UbuntuServer",
-    "OSDiskName": "hazelcastosdisk",
+    "OSDiskName": "osdiskforlinuxsimple",
     "nicName": "myVMNic",
     "addressPrefix": "10.0.0.0/16",
     "subnetName": "Subnet",
-    "subnetPrefix": "10.0.1.0/24",
+    "subnetPrefix": "10.0.0.0/24",
     "storageAccountType": "Standard_LRS",
-    "publicIPAddressName": "[parameters('publicIPAddressName')]",
+    "publicIPAddressName": "myPublicIP",
     "publicIPAddressType": "Dynamic",
     "vmStorageAccountContainerName": "vhds",
-    "vmName": "hazelcast",
-    "virtualNetworkName": "hazelcastVNet",
-    "osProfile": "[variables(concat('osProfile', parameters('authenticationType')))]",
-    "osProfilepassword": {
-      "adminPassword": "[parameters('adminPassword')]",
-      "adminUsername": "[parameters('adminUsername')]",
-      "computerName": "[variables('vmName')]"
-    },
-    "osProfilesshPublicKey": {
-      "adminUsername": "[parameters('adminUsername')]",
-      "computerName": "[variables('vmName')]",
-      "linuxConfiguration": {
-        "disablePasswordAuthentication": "true",
-        "ssh": {
-          "publicKeys": [
-            {
-              "keyData": "[parameters('sshPublicKey')]",
-	      "path": "[concat('/home/',parameters('adminUsername'),'/.ssh/authorized_keys')]"
-            }
-          ]
-        }
-      }
-    },
+    "vmName": "MyUbuntuVM",
+    "vmSize": "Standard_A0",
+    "virtualNetworkName": "MyVNET",
     "vnetID": "[resourceId('Microsoft.Network/virtualNetworks',variables('virtualNetworkName'))]",
-    "sshKeyPath": "[concat('/home/',parameters('adminUsername'),'/.ssh/authorized_keys')]",
     "subnetRef": "[concat(variables('vnetID'),'/subnets/',variables('subnetName'))]",
-    "ComputeapiVersion": "2016-03-30",
-    "NetworkapiVersion": "2016-03-30",
-    "StorageapiVersion": "2016-01-01",
     "bootstrapFiles": [
       "[concat(parameters('templateBaseUrl'), '/bootstrap_hazelcast')]",
       "[concat(parameters('templateBaseUrl'), '/hazelcast')]",
@@ -186,31 +122,30 @@
   "resources": [
     {
       "type": "Microsoft.Storage/storageAccounts",
-      "name": "[variables('newStorageAccountName')]",
-      "apiVersion": "[variables('StorageapiVersion')]",
-      "location": "[parameters('location')]",
-      "sku": {
-        "name": "[parameters('storageAccountType')]"
-      },
-      "kind": "Storage"
+      "name": "[parameters('storageAccountName')]",
+      "apiVersion": "2015-05-01-preview",
+      "location": "[resourceGroup().location]",
+      "properties": {
+        "accountType": "[variables('storageAccountType')]"
+      }
     },
     {
-      "apiVersion": "[variables('NetworkapiVersion')]",
+      "apiVersion": "2015-05-01-preview",
       "type": "Microsoft.Network/publicIPAddresses",
       "name": "[variables('publicIPAddressName')]",
-      "location": "[parameters('location')]",
+      "location": "[resourceGroup().location]",
       "properties": {
         "publicIPAllocationMethod": "[variables('publicIPAddressType')]",
         "dnsSettings": {
-          "domainNameLabel": "[parameters('dnsPrefix')]"
+          "domainNameLabel": "[parameters('publicIPAddressName')]"
         }
       }
     },
     {
-      "apiVersion": "[variables('NetworkapiVersion')]",
+      "apiVersion": "2015-05-01-preview",
       "type": "Microsoft.Network/virtualNetworks",
       "name": "[variables('virtualNetworkName')]",
-      "location": "[parameters('location')]",
+      "location": "[resourceGroup().location]",
       "properties": {
         "addressSpace": {
           "addressPrefixes": [
@@ -228,10 +163,10 @@
       }
     },
     {
-      "apiVersion": "[variables('NetworkapiVersion')]",
+      "apiVersion": "2015-05-01-preview",
       "type": "Microsoft.Network/networkInterfaces",
-      "name": "[concat(variables('nicName'), '0')]",
-      "location": "[parameters('location')]",
+      "name": "[variables('nicName')]",
+      "location": "[resourceGroup().location]",
       "dependsOn": [
         "[concat('Microsoft.Network/publicIPAddresses/', variables('publicIPAddressName'))]",
         "[concat('Microsoft.Network/virtualNetworks/', variables('virtualNetworkName'))]"
@@ -254,45 +189,23 @@
       }
     },
     {
-      "apiVersion": "[variables('NetworkapiVersion')]",
-      "type": "Microsoft.Network/networkInterfaces",
-      "name": "[concat(variables('nicName'), copyIndex(1))]",
-      "location": "[parameters('location')]",
-      "dependsOn": [
-        "[concat('Microsoft.Network/virtualNetworks/', variables('virtualNetworkName'))]"
-      ],
-      "properties": {
-        "ipConfigurations": [
-          {
-            "name": "ipconfig1",
-            "properties": {
-              "privateIPAllocationMethod": "Dynamic",
-              "subnet": {
-                "id": "[variables('subnetRef')]"
-              }
-            }
-          }
-        ]
-      },
-      "copy": {
-        "name": "createNics",
-        "count": "[sub(parameters('instanceCount'), 1)]"
-      }
-    },
-    {
-      "apiVersion": "[variables('ComputeapiVersion')]",
+      "apiVersion": "2015-05-01-preview",
       "type": "Microsoft.Compute/virtualMachines",
-      "name": "[concat(variables('vmName'), '0')]",
-      "location": "[parameters('location')]",
+      "name": "[variables('vmName')]",
+      "location": "[resourceGroup().location]",
       "dependsOn": [
-        "[concat('Microsoft.Storage/storageAccounts/', variables('newStorageAccountName'))]",
-        "[concat('Microsoft.Network/networkInterfaces/', variables('nicName'), '0')]"
+        "[concat('Microsoft.Storage/storageAccounts/', parameters('storageAccountName'))]",
+        "[concat('Microsoft.Network/networkInterfaces/', variables('nicName'))]"
       ],
       "properties": {
         "hardwareProfile": {
-          "vmSize": "[parameters('vmSize')]"
+          "vmSize": "[variables('vmSize')]"
         },
-        "osProfile": "[variables('osProfile')]",
+        "osProfile": {
+          "computerName": "[variables('vmName')]",
+          "adminUsername": "[parameters('adminUsername')]",
+          "adminPassword": "[parameters('adminPassword')]"
+        },
         "storageProfile": {
           "imageReference": {
             "publisher": "[variables('imagePublisher')]",
@@ -301,9 +214,9 @@
             "version": "latest"
           },
           "osDisk": {
-            "name": "osdisk1",
+            "name": "osdisk",
             "vhd": {
-              "uri": "[concat('http://',variables('newStorageAccountName'),'.blob.core.windows.net/',variables('vmStorageAccountContainerName'),'/',variables('OSDiskName'), '0', '.vhd')]"
+              "uri": "[concat('http://',parameters('storageAccountName'),'.blob.core.windows.net/',variables('vmStorageAccountContainerName'),'/',variables('OSDiskName'),'.vhd')]"
             },
             "caching": "ReadWrite",
             "createOption": "FromImage"
@@ -312,79 +225,29 @@
         "networkProfile": {
           "networkInterfaces": [
             {
-              "id": "[resourceId('Microsoft.Network/networkInterfaces',concat(variables('nicName'), '0'))]"
+              "id": "[resourceId('Microsoft.Network/networkInterfaces',variables('nicName'))]"
             }
           ]
         }
-      }
-    },
-    {
-      "apiVersion": "[variables('ComputeapiVersion')]",
-      "type": "Microsoft.Compute/virtualMachines",
-      "name": "[concat(variables('vmName'), copyIndex(1))]",
-      "location": "[parameters('location')]",
-      "dependsOn": [
-        "[concat('Microsoft.Storage/storageAccounts/', variables('newStorageAccountName'))]",
-        "[concat('Microsoft.Network/networkInterfaces/', variables('nicName'), copyIndex(1))]",
-        "createNics"
-      ],
-      "properties": {
-        "hardwareProfile": {
-          "vmSize": "[parameters('vmSize')]"
-        },
-        "osProfile": "[variables('osProfile')]",
-        "storageProfile": {
-          "imageReference": {
-            "publisher": "[variables('imagePublisher')]",
-            "offer": "[variables('imageOffer')]",
-            "sku": "[parameters('ubuntuOSVersion')]",
-            "version": "latest"
-          },
-          "osDisk": {
-            "name": "osdisk1",
-            "vhd": {
-              "uri": "[concat('http://',variables('newStorageAccountName'),'.blob.core.windows.net/',variables('vmStorageAccountContainerName'),'/',variables('OSDiskName'), copyIndex(1), '.vhd')]"
-            },
-            "caching": "ReadWrite",
-            "createOption": "FromImage"
-          }
-        },
-        "networkProfile": {
-          "networkInterfaces": [
-            {
-              "id": "[resourceId('Microsoft.Network/networkInterfaces', concat(variables('nicName'), copyIndex(1)))]"
-            }
-          ]
-        }
-      },
-      "copy": {
-        "name": "createVms",
-        "count": "[sub(parameters('instanceCount'), 1)]"
       }
     },
     {
       "type": "Microsoft.Compute/virtualMachines/extensions",
-      "name": "[concat(variables('vmName'), copyIndex(0),'/initHazelcast')]",
-      "apiVersion": "[variables('ComputeapiVersion')]",
-      "location": "[parameters('location')]",
+      "name": "[concat(variables('vmName'),'/newuserscript')]",
+      "apiVersion": "2015-05-01-preview",
+      "location": "[resourceGroup().location]",
       "dependsOn": [
-        "createVms"
+        "[concat('Microsoft.Compute/virtualMachines/', variables('vmName'))]"
       ],
       "properties": {
+        "publisher": "Microsoft.Azure.Extensions",
+        "type": "CustomScript",
+        "typeHandlerVersion": "2.0",
         "autoUpgradeMinorVersion": true,
-        "publisher": "Microsoft.OSTCExtensions",
-        "type": "CustomScriptForLinux",
-        "typeHandlerVersion": "1.5",
         "settings": {
-          "fileUris": "[variables('bootstrapFiles')]"
-        },
-        "protectedSettings": {
+          "fileUris": "[variables('bootstrapFiles')]",
           "commandToExecute": "[concat('sh bootstrap_hazelcast ', parameters('clusterVersion'), ' ', parameters('licenseKey') )]"
         }
-      },
-      "copy": {
-        "name": "createExtensions",
-        "count": "[sub(parameters('instanceCount'), 0)]"
       }
     }
   ]
