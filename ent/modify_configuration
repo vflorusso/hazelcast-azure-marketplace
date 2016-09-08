@@ -15,6 +15,7 @@ if __name__ == "__main__":
 
     parser = OptionParser()
     parser.add_option("-k","--license-key",dest="license_key") 
+    parser.add_option("-u","--man-url",dest="mancenter_url") 
     parser.add_option("-n","--cluster-name",dest="cluster_name") 
     parser.add_option("-p","--cluster-password",dest="cluster_password")
     parser.add_option("-v","--cluster-version",dest="cluster_version")
@@ -38,6 +39,14 @@ if __name__ == "__main__":
             for key in root.iter(str(QName(hazelcast_ns, "license-key"))):
                 key.text = opts.license_key
             print("Updated license key...") 
+
+            # update management center url
+            if opts.mancenter_url:
+                for key in root.iter(str(QName(hazelcast_ns, "management-center"))):
+                    key.set('enabled', 'true')
+                    key.text = opts.mancenter_url
+                print("Updated management center url...")
+            
 
 	    ## Finding and replacing the old group tag with the new one
             for group in root.iter(str(QName(hazelcast_ns, "group"))):

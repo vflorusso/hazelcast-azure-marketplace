@@ -38,6 +38,12 @@
         "description": "License Key for Enterprise to be installed. For a trial key: https://hazelcast.com/hazelcast-enterprise-download/trial/"
       }
     },
+    "manCenterURL":{
+      "type": "string",
+      "metadata": {
+        "description": "The URL this cluster will use to connect to Management Center."
+      }
+    },
     "clusterVersion": {
       "type": "string",
       "metadata": {
@@ -398,7 +404,7 @@
           "fileUris": "[variables('bootstrapFiles')]"
         },
         "protectedSettings": {
-          "commandToExecute": "[concat('sh bootstrap_hazelcast ', parameters('clusterUserName'), ' ', parameters('clusterPassword'), ' ', parameters('clusterVersion'), ' ', parameters('instanceCount'), ' ', parameters('licenseKey'), ' ', parameters('customJar') )]"
+          "commandToExecute": "[concat('sh bootstrap_hazelcast ', parameters('clusterUserName'), ' ', parameters('clusterPassword'), ' ', parameters('clusterVersion'), ' ', parameters('instanceCount'), ' ', parameters('licenseKey'), ' ', parameters('manCenterURL'), ' ', parameters('customJar') )]"
         }
       },
       "copy": {

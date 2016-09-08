@@ -10,9 +10,6 @@
         "artifactsBaseUrl": "Base URL to be replaced by marketplace storage."
   }
 },
-"authenticationType": {
-"type": "string"
-},
 "licenseKey": {
 "type": "string"
 },
@@ -43,7 +40,16 @@
 "location": {
 "type": "string"
 },
-
+    "authenticationType": {
+      "type": "string",
+      "metadata": {
+        "description": "Authentication method for logging into Hazelcast VMs."
+      },
+      "allowedValues": [
+        "password",
+        "sshPublicKey"
+      ]
+    },
     "adminUsername": {
       "type": "string",
       "metadata": {
@@ -54,6 +60,13 @@
       "type": "securestring",
       "metadata": {
         "description": "Password for the Virtual Machine."
+      }
+    },
+    "sshPublicKey": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "SSH Public key for hazelcast VMs, if authenticationType is set to 'sshPublicKey'"
       }
     },
     "publicIPAddressName": {
@@ -92,7 +105,7 @@
     "imagePublisher": "Canonical",
     "imageOffer": "UbuntuServer",
     "OSDiskName": "osdiskforlinuxsimple",
-    "nicName": "myVMNic",
+    "nicName": "hzVMNic",
     "addressPrefix": "10.0.0.0/16",
     "subnetName": "Subnet",
     "subnetPrefix": "10.0.0.0/24",
@@ -100,11 +113,33 @@
     "publicIPAddressName": "myPublicIP",
     "publicIPAddressType": "Dynamic",
     "vmStorageAccountContainerName": "vhds",
-    "vmName": "MyUbuntuVM",
+    "vmName": "ManCenterVM",
     "vmSize": "Standard_A0",
-    "virtualNetworkName": "MyVNET",
+    "virtualNetworkName": "hzVNET",
     "vnetID": "[resourceId('Microsoft.Network/virtualNetworks',variables('virtualNetworkName'))]",
     "subnetRef": "[concat(variables('vnetID'),'/subnets/',variables('subnetName'))]",
+    "osProfile": "[variables(concat('osProfile', parameters('authenticationType')))]",
+    "osProfilepassword": {
+      "adminPassword": "[parameters('adminPassword')]",
+      "adminUsername": "[parameters('adminUsername')]",
+      "computerName": "[variables('vmName')]"
+    },
+    "osProfilesshPublicKey": {
+      "adminUsername": "[parameters('adminUsername')]",
+      "computerName": "[variables('vmName')]",
+      "linuxConfiguration": {
+        "disablePasswordAuthentication": "true",
+        "ssh": {
+          "publicKeys": [
+            {
+              "keyData": "[parameters('sshPublicKey')]",
+              "path": "[concat('/home/',parameters('adminUsername'),'/.ssh/authorized_keys')]"
+            }
+          ]
+        }
+      }
+    },
+    "sshKeyPath": "[concat('/home/',parameters('adminUsername'),'/.ssh/authorized_keys')]",
     "bootstrapFiles": [
       "[concat(parameters('templateBaseUrl'), '/bootstrap_hazelcast')]",
       "[concat(parameters('templateBaseUrl'), '/hazelcast')]",
@@ -201,11 +236,7 @@
         "hardwareProfile": {
           "vmSize": "[variables('vmSize')]"
         },
-        "osProfile": {
-          "computerName": "[variables('vmName')]",
-          "adminUsername": "[parameters('adminUsername')]",
-          "adminPassword": "[parameters('adminPassword')]"
-        },
+	"osProfile": "[variables('osProfile')]",
         "storageProfile": {
           "imageReference": {
             "publisher": "[variables('imagePublisher')]",
