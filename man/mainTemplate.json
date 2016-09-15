@@ -101,6 +101,7 @@
 "dnsPrefix": "",
 "publicIPNewOrExisting": "",
 "location": "",
+"vmSize": "",
 
     "imagePublisher": "Canonical",
     "imageOffer": "UbuntuServer",
