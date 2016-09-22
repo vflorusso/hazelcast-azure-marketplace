@@ -28,9 +28,12 @@
 "existingStorageAccountRG": {
 "type": "string"
 },
-"vmSize": {
-"type": "string"
-},
+    "vmSize": {
+      "type": "string",
+      "metadata": {
+        "description": "The size of each instance VM"
+      }
+    },
 "dnsPrefix": {
 "type": "string"
 },
@@ -101,8 +104,6 @@
 "dnsPrefix": "",
 "publicIPNewOrExisting": "",
 "location": "",
-"vmSize": "",
-
     "imagePublisher": "Canonical",
     "imageOffer": "UbuntuServer",
     "OSDiskName": "osdiskforlinuxsimple",
@@ -234,7 +235,7 @@
       ],
       "properties": {
         "hardwareProfile": {
-          "vmSize": "[variables('vmSize')]"
+          "vmSize": "[parameters('vmSize')]"
         },
 	"osProfile": "[variables('osProfile')]",
         "storageProfile": {
