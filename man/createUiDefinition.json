@@ -179,7 +179,7 @@
                             ]
                         },
                         "osPlatform": "Linux",
-                        "count": "[steps('infrastructureConfig').vmCount]"
+                        "count": "1"
                     },
                     {
                         "name": "dnsAndPublicIP",
