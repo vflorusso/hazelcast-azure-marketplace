@@ -17,13 +17,25 @@
 "type": "string"
 },
 "storageAccountNewOrExisting": {
-"type": "string"
+  "type": "string",
+  "defaultValue": "",
+  "metadata": {
+  "description": ""
+  }
 },
 "storageAccountName": {
-"type": "string"
+  "type": "string",
+  "defaultValue": "", 
+  "metadata": {
+  "description": ""
+  }
 },
 "storageAccountType": {
-"type": "string"
+  "type": "string",
+  "defaultValue": "", 
+  "metadata": {
+  "description": ""
+  }
 },
 "existingStorageAccountRG": {
 "type": "string"
@@ -158,12 +170,13 @@
   "resources": [
     {
       "type": "Microsoft.Storage/storageAccounts",
-      "name": "[parameters('storageAccountName')]",
-      "apiVersion": "2015-05-01-preview",
-      "location": "[resourceGroup().location]",
-      "properties": {
-        "accountType": "[variables('storageAccountType')]"
-      }
+      "name": "[variables('newStorageAccountName')]",
+      "apiVersion": "[variables('StorageapiVersion')]",
+      "location": "[parameters('location')]",
+      "sku": {
+        "name": "[parameters('storageAccountType')]"
+      },
+      "kind": "Storage"
     },
     {
       "apiVersion": "2015-05-01-preview",
