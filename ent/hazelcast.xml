@@ -3,7 +3,7 @@
         <name>dev</name>
         <password>dev-pass</password>
     </group>
-    <management-center enabled="false">MANCENTERURL</<management-center>    
+    <management-center enabled="false">MANCENTERURL</management-center>    
     <network>
         <port auto-increment="true">5701</port>
         <join>
