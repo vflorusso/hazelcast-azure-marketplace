@@ -197,8 +197,8 @@
                             }
                         },
                         "defaultValue": {
-                            "publicIpAddressName": "hazelcastmancenter",
-                            "domainNameLabel": ""
+                            "publicIpAddressName": "",
+                            "domainNameLabel": "Public name of this management center"
                         },
                         "options": {
                             "hideNone": true
