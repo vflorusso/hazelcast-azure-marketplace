@@ -286,6 +286,7 @@
       "apiVersion": "[variables('ComputeapiVersion')]",
       "location": "[resourceGroup().location]",
       "dependsOn": [
+	"[concat('Microsoft.Storage/storageAccounts/', variables('newStorageAccountName'))]",
         "[concat('Microsoft.Compute/virtualMachines/', variables('vmName'))]"
       ],
       "properties": {
