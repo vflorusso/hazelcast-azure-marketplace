@@ -170,7 +170,7 @@
   "resources": [
     {
       "type": "Microsoft.Storage/storageAccounts",
-      "name": "[variables('newStorageAccountName')]",
+      "name": "[variables('storageAccountName')]",
       "apiVersion": "[variables('StorageapiVersion')]",
       "location": "[parameters('location')]",
       "sku": {
