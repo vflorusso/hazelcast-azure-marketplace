@@ -23,6 +23,12 @@
   "description": ""
   }
 },
+"newStorageAccountName": {
+  "type": "string",
+  "defaultValue": "",
+  "metadata": {
+  "description": ""
+},
 "storageAccountName": {
   "type": "string",
   "defaultValue": "", 
