@@ -15,7 +15,8 @@ sh -c 'echo "CLUSTER_VERSION=$CLUSTER_VERSION" >> /etc/environment'
 
 CLUSTER_SIZE=$4
 LICENSEKEY=$5
-CUSTOM_JAR=$6
+MANCENTER_URL=$6
+CUSTOM_JAR=$7
 
 echo "Creating /var/hazelcast"
 mkdir /var/hazelcast
@@ -32,7 +33,7 @@ fi
 chmod +x install_hazelcast
 chmod +x modify_configuration
 echo "modify_configuration"
-./modify_configuration --license-key=$LICENSEKEY --cluster-name=$CLUSTER_NAME --cluster-password=$CLUSTER_PASSWORD --cluster-version=$CLUSTER_VERSION --cluster-size=$CLUSTER_SIZE --filename=hazelcast.xml
+./modify_configuration --license-key=$LICENSEKEY --cluster-name=$CLUSTER_NAME --cluster-password=$CLUSTER_PASSWORD --cluster-version=$CLUSTER_VERSION --cluster-size=$CLUSTER_SIZE --man-url=$MANCENTER_URL --filename=hazelcast.xml
 echo "install_hazelcast"
 ./install_hazelcast $CLUSTER_VERSION
 
