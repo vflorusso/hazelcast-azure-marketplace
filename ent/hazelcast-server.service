@@ -3,6 +3,7 @@ Description=Hazelcast In-Memory Data Grid
 
 [Service]
 WorkingDirectory=/var/hazelcast/bin
+rm -f /var/hazelcast/bin/hazelcast_instance.pid
 ExecStart=/var/hazelcast/bin/start.sh
 StandardOutput=syslog
 StandardError=syslog
