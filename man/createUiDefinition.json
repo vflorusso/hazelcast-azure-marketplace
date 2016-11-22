@@ -57,10 +57,18 @@
                         "name": "clusterVersion",
                         "type": "Microsoft.Common.DropDown",
                         "label": "Hazelcast Version",
-                        "defaultValue": "3.7.1",
+                        "defaultValue": "3.7.3",
                         "toolTip": "",
                         "constraints": {
                             "allowedValues": [
+                                {
+                                    "label": "3.7.3",
+                                    "value": "3.7.3"
+                                },
+                                {
+                                    "label": "3.7.2",
+                                    "value": "3.7.2"
+                                },
                                 {
                                     "label": "3.7.1",
                                     "value": "3.7.1"
