@@ -23,12 +23,6 @@
   "description": ""
   }
 },
-"newStorageAccountName": {
-  "type": "string",
-  "defaultValue": "",
-  "metadata": {
-  "description": ""
-},
 "storageAccountName": {
   "type": "string",
   "defaultValue": "", 
@@ -110,7 +104,6 @@
     }
   },
   "variables": {
-"newStorageAccountName": "[concat(uniqueString(resourceGroup().id), 'hazelcast')]",
 "authenticationType": "",
 "licenseKey": "",
 "clusterVersion": "",
@@ -234,7 +227,7 @@
           {
             "name": "ipconfig1",
             "properties": {
-              "privateIPAllocationMethod": "Dynamic",
+              "privateIPAllocationMethod": "Static",
               "publicIPAddress": {
                 "id": "[resourceId('Microsoft.Network/publicIPAddresses',variables('publicIPAddressName'))]"
               },
