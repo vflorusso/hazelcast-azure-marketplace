@@ -186,8 +186,8 @@
     "sshKeyPath": "[concat('/home/',parameters('adminUsername'),'/.ssh/authorized_keys')]",
     "subnetRef": "[concat(variables('vnetID'),'/subnets/',variables('subnetName'))]",
     "ComputeapiVersion": "2016-03-30",
-    "NetworkapiVersion": "2016-03-30",
-    "StorageapiVersion": "2016-01-01",
+    "NetworkapiVersion": "2016-10-01",
+    "StorageapiVersion": "2016-05-01",
     "bootstrapFiles": [
       "[concat(parameters('templateBaseUrl'), '/bootstrap_hazelcast')]",
       "[concat(parameters('templateBaseUrl'), '/hazelcast')]",
@@ -275,7 +275,7 @@
     {
       "apiVersion": "[variables('NetworkapiVersion')]",
       "type": "Microsoft.Network/networkInterfaces",
-      "name": "[concat(variables('nicName'), copyIndex(1))]",
+      "name": "[concat(variables('nicName'), copyIndex())]",
       "location": "[parameters('location')]",
       "dependsOn": [
         "[concat('Microsoft.Network/virtualNetworks/', variables('virtualNetworkName'))]"
@@ -340,11 +340,11 @@
     {
       "apiVersion": "[variables('ComputeapiVersion')]",
       "type": "Microsoft.Compute/virtualMachines",
-      "name": "[concat(variables('vmName'), copyIndex(1))]",
+      "name": "[concat(variables('vmName'), copyIndex())]",
       "location": "[parameters('location')]",
       "dependsOn": [
         "[concat('Microsoft.Storage/storageAccounts/', variables('newStorageAccountName'))]",
-        "[concat('Microsoft.Network/networkInterfaces/', variables('nicName'), copyIndex(1))]",
+        "[concat('Microsoft.Network/networkInterfaces/', variables('nicName'), copyIndex())]",
         "createNics"
       ],
       "properties": {
@@ -362,7 +362,7 @@
           "osDisk": {
             "name": "osdisk1",
             "vhd": {
-              "uri": "[concat('http://',variables('newStorageAccountName'),'.blob.core.windows.net/',variables('vmStorageAccountContainerName'),'/',variables('OSDiskName'), copyIndex(1), '.vhd')]"
+              "uri": "[concat('http://',variables('newStorageAccountName'),'.blob.core.windows.net/',variables('vmStorageAccountContainerName'),'/',variables('OSDiskName'), copyIndex(), '.vhd')]"
             },
             "caching": "ReadWrite",
             "createOption": "FromImage"
@@ -371,7 +371,7 @@
         "networkProfile": {
           "networkInterfaces": [
             {
-              "id": "[resourceId('Microsoft.Network/networkInterfaces', concat(variables('nicName'), copyIndex(1)))]"
+              "id": "[resourceId('Microsoft.Network/networkInterfaces', concat(variables('nicName'), copyIndex()))]"
             }
           ]
         }
@@ -383,7 +383,7 @@
     },
     {
       "type": "Microsoft.Compute/virtualMachines/extensions",
-      "name": "[concat(variables('vmName'), copyIndex(0),'/initHazelcast')]",
+      "name": "[concat(variables('vmName'), copyIndex(),'/initHazelcast')]",
       "apiVersion": "[variables('ComputeapiVersion')]",
       "location": "[parameters('location')]",
       "dependsOn": [
@@ -393,7 +393,7 @@
         "autoUpgradeMinorVersion": true,
         "publisher": "Microsoft.OSTCExtensions",
         "type": "CustomScriptForLinux",
-        "typeHandlerVersion": "1.5",
+        "typeHandlerVersion": "2.0",
         "settings": {
           "fileUris": "[variables('bootstrapFiles')]"
         },
