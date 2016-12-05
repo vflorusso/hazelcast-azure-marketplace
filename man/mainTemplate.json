@@ -104,15 +104,13 @@
     "clusterVersion": "",
     "storageAccountNewOrExisting": "",
     "storageAccountName": "",
-    "storageAccountType": "",
     "existingStorageAccountRG": "",
-    "publicIPAddressName": "",
     "dnsPrefix": "",
     "publicIPNewOrExisting": "",
     "location": "",
     "ComputeapiVersion": "2016-03-30",
-    "NetworkapiVersion": "2016-03-30",
-    "StorageapiVersion": "2016-01-01",
+    "NetworkapiVersion": "2016-10-01",
+    "StorageapiVersion": "2016-05-01",
     "imagePublisher": "Canonical",
     "imageOffer": "UbuntuServer",
     "OSDiskName": "osdiskforlinuxsimple",
@@ -167,7 +165,7 @@
   "resources": [
     {
       "type": "Microsoft.Storage/storageAccounts",
-      "name": "[variables('newStorageAccountName')]",
+      "name": "[parameters('storageAccountName')]",
       "apiVersion": "[variables('StorageapiVersion')]",
       "location": "[parameters('location')]",
       "sku": {
@@ -223,6 +221,7 @@
             "name": "ipconfig1",
             "properties": {
               "privateIPAllocationMethod": "Static",
+              "privateIPAddress": "10.0.0.2",
               "publicIPAddress": {
                 "id": "[resourceId('Microsoft.Network/publicIPAddresses',variables('publicIPAddressName'))]"
               },
@@ -258,7 +257,7 @@
           "osDisk": {
             "name": "osdisk",
             "vhd": {
-              "uri": "[concat('http://',variables('newStorageAccountName'),'.blob.core.windows.net/',variables('vmStorageAccountContainerName'),'/',variables('OSDiskName'),'.vhd')]"
+              "uri": "[concat('http://',parameters('storageAccountName'),'.blob.core.windows.net/',variables('vmStorageAccountContainerName'),'/',variables('OSDiskName'),'.vhd')]"
             },
             "caching": "ReadWrite",
             "createOption": "FromImage"
@@ -279,7 +278,7 @@
       "apiVersion": "[variables('ComputeapiVersion')]",
       "location": "[resourceGroup().location]",
       "dependsOn": [
-        "[concat('Microsoft.Storage/storageAccounts/', variables('newStorageAccountName'))]",
+        "[concat('Microsoft.Storage/storageAccounts/', parameters('storageAccountName'))]",
         "[concat('Microsoft.Compute/virtualMachines/', variables('vmName'))]"
       ],
       "properties": {
@@ -288,7 +287,9 @@
         "typeHandlerVersion": "2.0",
         "autoUpgradeMinorVersion": true,
         "settings": {
-          "fileUris": "[variables('bootstrapFiles')]",
+          "fileUris": "[variables('bootstrapFiles')]"
+        },
+        "protectedSettings":{
           "commandToExecute": "[concat('sh bootstrap_hazelcast ', parameters('clusterVersion'), ' ', parameters('licenseKey') )]"
         }
       }
