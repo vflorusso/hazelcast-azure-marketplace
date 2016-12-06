@@ -94,12 +94,7 @@
       "defaultValue": "14.04.2-LTS",
       "metadata": {
         "description": "The Ubuntu version for deploying the Docker containers. This will pick a fully patched image of this given Ubuntu version. Allowed values: 14.04.2-LTS, 14.04, 16.04.0-LTS"
-      },
-      "allowedValues": [
-        "14.04.2-LTS",
-        "14.04.4-LTS",
-        "16.04.0-LTS"
-      ]
+      }
     },
     "storageAccountNewOrExisting": {
       "type": "string",
@@ -191,8 +186,8 @@
     "sshKeyPath": "[concat('/home/',parameters('adminUsername'),'/.ssh/authorized_keys')]",
     "subnetRef": "[concat(variables('vnetID'),'/subnets/',variables('subnetName'))]",
     "ComputeapiVersion": "2016-03-30",
-    "NetworkapiVersion": "2016-03-30",
-    "StorageapiVersion": "2016-01-01",
+    "NetworkapiVersion": "2016-10-01",
+    "StorageapiVersion": "2016-05-01",
     "bootstrapFiles": [
       "[concat(parameters('templateBaseUrl'), '/bootstrap_hazelcast')]",
       "[concat(parameters('templateBaseUrl'), '/hazelcast')]",
@@ -291,6 +286,7 @@
             "name": "ipconfig1",
             "properties": {
               "privateIPAllocationMethod": "Static",
+              "privateIPAddress": "[concat('10.1.0.',string(copyIndex(3)))]",
               "subnet": {
                 "id": "[variables('subnetRef')]"
               }
@@ -367,7 +363,7 @@
           "osDisk": {
             "name": "osdisk1",
             "vhd": {
-              "uri": "[concat('http://',variables('newStorageAccountName'),'.blob.core.windows.net/',variables('vmStorageAccountContainerName'),'/',variables('OSDiskName'), copyIndex(1), '.vhd')]"
+              "uri": "[concat('http://',variables('newStorageAccountName'),'.blob.core.windows.net/',variables('vmStorageAccountContainerName'),'/',variables('OSDiskName'), copyIndex(), '.vhd')]"
             },
             "caching": "ReadWrite",
             "createOption": "FromImage"
@@ -388,17 +384,18 @@
     },
     {
       "type": "Microsoft.Compute/virtualMachines/extensions",
-      "name": "[concat(variables('vmName'), copyIndex(0),'/initHazelcast')]",
+      "name": "[concat(variables('vmName'), copyIndex(),'/initHazelcast')]",
       "apiVersion": "[variables('ComputeapiVersion')]",
       "location": "[parameters('location')]",
       "dependsOn": [
-        "createVms"
+        "createVms",
+        "[concat('Microsoft.Compute/virtualMachines/',variables('vmName'), '0')]"
       ],
       "properties": {
         "autoUpgradeMinorVersion": true,
         "publisher": "Microsoft.OSTCExtensions",
         "type": "CustomScriptForLinux",
-        "typeHandlerVersion": "1.5",
+        "typeHandlerVersion": "2.0",
         "settings": {
           "fileUris": "[variables('bootstrapFiles')]"
         },
@@ -408,7 +405,7 @@
       },
       "copy": {
         "name": "createExtensions",
-        "count": "[sub(parameters('instanceCount'), 0)]"
+        "count": "[parameters('instanceCount')]"
       }
     }
   ]

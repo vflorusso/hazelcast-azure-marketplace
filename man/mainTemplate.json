@@ -2,59 +2,59 @@
   "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
-"templateBaseUrl": {
+    "templateBaseUrl": {
       "type": "string",
       "defaultValue": "https://raw.githubusercontent.com/hazelcast/hazelcast-azure-marketplace/master/man",
       "metadata": {
         "description": "The base URL for the bootstrap files",
         "artifactsBaseUrl": "Base URL to be replaced by marketplace storage."
-  }
-},
-"licenseKey": {
-"type": "string"
-},
-"clusterVersion": {
-"type": "string"
-},
-"storageAccountNewOrExisting": {
-  "type": "string",
-  "defaultValue": "",
-  "metadata": {
-  "description": ""
-  }
-},
-"storageAccountName": {
-  "type": "string",
-  "defaultValue": "", 
-  "metadata": {
-  "description": ""
-  }
-},
-"storageAccountType": {
-  "type": "string",
-  "defaultValue": "", 
-  "metadata": {
-  "description": ""
-  }
-},
-"existingStorageAccountRG": {
-"type": "string"
-},
+      }
+    },
+    "licenseKey": {
+      "type": "string"
+    },
+    "clusterVersion": {
+      "type": "string"
+    },
+    "storageAccountNewOrExisting": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": ""
+      }
+    },
+    "storageAccountName": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": ""
+      }
+    },
+    "storageAccountType": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": ""
+      }
+    },
+    "existingStorageAccountRG": {
+      "type": "string"
+    },
     "vmSize": {
       "type": "string",
       "metadata": {
         "description": "The size of each instance VM"
       }
     },
-"dnsPrefix": {
-"type": "string"
-},
-"publicIPNewOrExisting": {
-"type": "string"
-},
-"location": {
-"type": "string"
-},
+    "dnsPrefix": {
+      "type": "string"
+    },
+    "publicIPNewOrExisting": {
+      "type": "string"
+    },
+    "location": {
+      "type": "string"
+    },
     "authenticationType": {
       "type": "string",
       "metadata": {
@@ -93,31 +93,24 @@
     "ubuntuOSVersion": {
       "type": "string",
       "defaultValue": "14.04.4-LTS",
-      "allowedValues": [
-        "12.04.5-LTS",
-        "14.04.4-LTS",
-	"16.04.0-LTS"
-      ],
       "metadata": {
         "description": "The Ubuntu version for the VM. This will pick a fully patched image of this given Ubuntu version."
       }
     }
   },
   "variables": {
-"authenticationType": "",
-"licenseKey": "",
-"clusterVersion": "",
-"storageAccountNewOrExisting": "",
-"storageAccountName": "",
-"storageAccountType": "",
-"existingStorageAccountRG": "",
-"publicIPAddressName": "",
-"dnsPrefix": "",
-"publicIPNewOrExisting": "",
-"location": "",
-"ComputeapiVersion": "2016-03-30",
-"NetworkapiVersion": "2016-03-30",
-"StorageapiVersion": "2016-01-01",
+    "authenticationType": "",
+    "licenseKey": "",
+    "clusterVersion": "",
+    "storageAccountNewOrExisting": "",
+    "storageAccountName": "",
+    "existingStorageAccountRG": "",
+    "dnsPrefix": "",
+    "publicIPNewOrExisting": "",
+    "location": "",
+    "ComputeapiVersion": "2016-03-30",
+    "NetworkapiVersion": "2016-10-01",
+    "StorageapiVersion": "2016-05-01",
     "imagePublisher": "Canonical",
     "imageOffer": "UbuntuServer",
     "OSDiskName": "osdiskforlinuxsimple",
@@ -172,7 +165,7 @@
   "resources": [
     {
       "type": "Microsoft.Storage/storageAccounts",
-      "name": "[variables('newStorageAccountName')]",
+      "name": "[parameters('storageAccountName')]",
       "apiVersion": "[variables('StorageapiVersion')]",
       "location": "[parameters('location')]",
       "sku": {
@@ -228,6 +221,7 @@
             "name": "ipconfig1",
             "properties": {
               "privateIPAllocationMethod": "Static",
+              "privateIPAddress": "10.0.0.2",
               "publicIPAddress": {
                 "id": "[resourceId('Microsoft.Network/publicIPAddresses',variables('publicIPAddressName'))]"
               },
@@ -252,7 +246,7 @@
         "hardwareProfile": {
           "vmSize": "[parameters('vmSize')]"
         },
-	"osProfile": "[variables('osProfile')]",
+        "osProfile": "[variables('osProfile')]",
         "storageProfile": {
           "imageReference": {
             "publisher": "[variables('imagePublisher')]",
@@ -263,7 +257,7 @@
           "osDisk": {
             "name": "osdisk",
             "vhd": {
-              "uri": "[concat('http://',variables('newStorageAccountName'),'.blob.core.windows.net/',variables('vmStorageAccountContainerName'),'/',variables('OSDiskName'),'.vhd')]"
+              "uri": "[concat('http://',parameters('storageAccountName'),'.blob.core.windows.net/',variables('vmStorageAccountContainerName'),'/',variables('OSDiskName'),'.vhd')]"
             },
             "caching": "ReadWrite",
             "createOption": "FromImage"
@@ -284,7 +278,7 @@
       "apiVersion": "[variables('ComputeapiVersion')]",
       "location": "[resourceGroup().location]",
       "dependsOn": [
-	"[concat('Microsoft.Storage/storageAccounts/', variables('newStorageAccountName'))]",
+        "[concat('Microsoft.Storage/storageAccounts/', parameters('storageAccountName'))]",
         "[concat('Microsoft.Compute/virtualMachines/', variables('vmName'))]"
       ],
       "properties": {
@@ -293,7 +287,9 @@
         "typeHandlerVersion": "2.0",
         "autoUpgradeMinorVersion": true,
         "settings": {
-          "fileUris": "[variables('bootstrapFiles')]",
+          "fileUris": "[variables('bootstrapFiles')]"
+        },
+        "protectedSettings":{
           "commandToExecute": "[concat('sh bootstrap_hazelcast ', parameters('clusterVersion'), ' ', parameters('licenseKey') )]"
         }
       }
