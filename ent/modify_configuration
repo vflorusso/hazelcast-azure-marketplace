@@ -61,7 +61,7 @@ if __name__ == "__main__":
 				print(tcpList.text)
 				ipList = ''
 				for addingIP in xrange(int(opts.cluster_size)):
-					ipAddy = '10.0.1.'+str(4+addingIP)
+					ipAddy = '10.0.1.'+str(5+addingIP)
 					ipList += ipAddy
 					if addingIP < (int(opts.cluster_size) - 1):
 						ipList += ','
