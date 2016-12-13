@@ -261,7 +261,7 @@
             "name": "ipconfig1",
             "properties": {
               "privateIPAllocationMethod": "Static",
-              "privateIPAddress": "10.0.1.5",
+              "privateIPAddress": "10.1.0.4",
               "publicIPAddress": {
                 "id": "[resourceId('Microsoft.Network/publicIPAddresses',variables('publicIPAddressName'))]"
               },
@@ -287,7 +287,7 @@
             "name": "ipconfig1",
             "properties": {
               "privateIPAllocationMethod": "Static",
-              "privateIPAddress": "[concat('10.0.1.',string(copyIndex(3)))]",
+              "privateIPAddress": "[concat('10.1.0.',string(copyIndex(5)))]",
               "subnet": {
                 "id": "[variables('subnetRef')]"
               }
