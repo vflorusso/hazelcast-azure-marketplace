@@ -18,8 +18,7 @@ if [ "$VERSION" = "3.6.4" ] || [ "$VERSION" = "3.6.5" ]
     rm -rf ./home
     cp -R `pwd`/hazelcast-enterprise-3.6.4/* /var/hazelcast
     chmod a+x /var/hazelcast/bin/*sh
-  elif
-  then
+  else
     # 3.7+
     wget http://download.hazelcast.com/enterprise/hazelcast-enterprise-$VERSION.tar.gz
     tar -xvzf hazelcast-enterprise-$VERSION.tar.gz
