@@ -1,6 +1,6 @@
 {
     "handler": "Microsoft.Compute.MultiVm",
-    "version": "0.0.1-preview",
+    "version": "0.1.2-preview",
     "parameters": {
         "basics": [
             {
@@ -55,13 +55,26 @@
                     },
                     {
                         "name": "manCenterURL",
-                        "type": "Microsoft.Common.TextBox",
-                        "label": "ManCenterURL",
-                        "toolTip": "The URL this cluster will use to connect to Management Center.",
-                        "constraints": {
-                            "required": false
+                        "type": "Microsoft.Network.PublicIpAddressCombo",
+                        "label": {
+                            "publicIpAddress": "Public IP address for Man Center",
+                            "domainNameLabel": "DNS Prefix for Man Center"
                         },
-                        "osPlatform": "Linux"
+                        "toolTip": {
+                            "domainNameLabel": "DNS Prefix for the Man Center public IP addresses."
+                        },
+                        "constraints": {
+                            "required": {
+                                "domainNameLabel": true
+                            }
+                        },
+                        "defaultValue": {
+                            "publicIpAddressName": "hazelcastmc",
+                            "domainNameLabel": ""
+                        },
+                        "options": {
+                            "hideNone": true
+                        }
                     },
                     {
                         "name": "clusterVersion",
@@ -212,7 +225,11 @@
                         },
                         "constraints": {
                             "required": true,
-                            "allowedTypes": ["Standard_LRS", "Standard_GRS", "Standard_RAGRS"]
+                            "allowedTypes": [
+                                "Standard_LRS",
+                                "Standard_GRS",
+                                "Standard_RAGRS"
+                            ]
                         }
                     },
                     {
@@ -222,7 +239,7 @@
                         "toolTip": "",
                         "defaultValue": "14.04.2-LTS",
                         "constraints": {
-                        "allowedValues": [
+                            "allowedValues": [
                                 {
                                     "label": "14.04.2-LTS",
                                     "value": "14.04.2-LTS"
@@ -236,7 +253,7 @@
                                     "value": "16.04.0-LTS"
                                 }
                             ]
-			}
+                        }
                     },
                     {
                         "name": "vmSize",
@@ -271,29 +288,6 @@
                         },
                         "osPlatform": "Linux",
                         "count": "[steps('infrastructureConfig').vmCount]"
-                    },
-                    {
-                        "name": "dnsAndPublicIP",
-                        "type": "Microsoft.Network.PublicIpAddressCombo",
-                        "label": {
-                            "publicIpAddress": "Public IP address",
-                            "domainNameLabel": "DNS Prefix"
-                        },
-                        "toolTip": {
-                            "domainNameLabel": "DNS Prefix for the VM public IP addresses."
-                        },
-                        "constraints": {
-                            "required": {
-                                "domainNameLabel": true
-                            }
-                        },
-                        "defaultValue": {
-                            "publicIpAddressName": "hazelcast",
-                            "domainNameLabel": ""
-                        },
-                        "options": {
-                            "hideNone": true
-                        }
                     }
                 ]
             }
@@ -317,7 +311,6 @@
             "vmSize": "[steps('infrastructureConfig').vmSize]",
             "instanceCount": "[steps('infrastructureConfig').vmCount]",
             "publicIPAddressName": "[steps('infrastructureConfig').dnsAndPublicIP.name]",
-            "dnsPrefix": "[steps('infrastructureConfig').dnsAndPublicIP.domainNameLabel]",
             "publicIPNewOrExisting": "[steps('infrastructureConfig').dnsAndPublicIP.newOrExistingOrNone]",
             "location": "[location()]"
         }
