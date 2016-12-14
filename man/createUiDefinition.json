@@ -1,6 +1,6 @@
 {
     "handler": "Microsoft.Compute.MultiVm",
-    "version": "0.0.1-preview",
+    "version": "0.1.2-preview",
     "parameters": {
         "basics": [
             {
@@ -125,7 +125,11 @@
                         },
                         "constraints": {
                             "required": true,
-                            "allowedTypes": ["Standard_LRS", "Standard_GRS", "Standard_RAGRS"]
+                            "allowedTypes": [
+                                "Standard_LRS",
+                                "Standard_GRS",
+                                "Standard_RAGRS"
+                            ]
                         }
                     },
                     {
@@ -135,7 +139,7 @@
                         "toolTip": "",
                         "defaultValue": "14.04.4-LTS",
                         "constraints": {
-                        "allowedValues": [
+                            "allowedValues": [
                                 {
                                     "label": "12.04.5-LTS",
                                     "value": "12.04.5-LTS"
@@ -149,7 +153,7 @@
                                     "value": "16.04.0-LTS"
                                 }
                             ]
-			}
+                        }
                     },
                     {
                         "name": "vmSize",

@@ -32,13 +32,13 @@
         "sshPublicKey"
       ]
     },
-    "licenseKey":{
+    "licenseKey": {
       "type": "string",
       "metadata": {
         "description": "License Key for Enterprise to be installed. For a trial key: https://hazelcast.com/hazelcast-enterprise-download/trial/"
       }
     },
-    "manCenterURL":{
+    "manCenterURL": {
       "type": "string",
       "metadata": {
         "description": "The URL this cluster will use to connect to Management Center."
@@ -68,13 +68,6 @@
       "type": "string",
       "metadata": {
         "description": "Password for hazelcast grid"
-      }
-    },
-    "dnsPrefix": {
-      "type": "string",
-      "defaultValue": "",
-      "metadata": {
-        "description": "Unique DNS Name for the Public IP used to access the Virtual Machine."
       }
     },
     "instanceCount": {
@@ -176,7 +169,7 @@
           "publicKeys": [
             {
               "keyData": "[parameters('sshPublicKey')]",
-	      "path": "[concat('/home/',parameters('adminUsername'),'/.ssh/authorized_keys')]"
+              "path": "[concat('/home/',parameters('adminUsername'),'/.ssh/authorized_keys')]"
             }
           ]
         }
@@ -185,6 +178,7 @@
     "vnetID": "[resourceId('Microsoft.Network/virtualNetworks',variables('virtualNetworkName'))]",
     "sshKeyPath": "[concat('/home/',parameters('adminUsername'),'/.ssh/authorized_keys')]",
     "subnetRef": "[concat(variables('vnetID'),'/subnets/',variables('subnetName'))]",
+    "manCenterUrlParam": "[concat(parameters('manCenterURL'), ':8080/mancenter')]",
     "ComputeapiVersion": "2016-03-30",
     "NetworkapiVersion": "2016-10-01",
     "StorageapiVersion": "2016-05-01",
@@ -221,7 +215,7 @@
       "properties": {
         "publicIPAllocationMethod": "[variables('publicIPAddressType')]",
         "dnsSettings": {
-          "domainNameLabel": "[parameters('dnsPrefix')]"
+          "domainNameLabel": "[parameters('manCenterURL')]"
         }
       }
     },
@@ -364,7 +358,7 @@
           "osDisk": {
             "name": "osdisk1",
             "vhd": {
-              "uri": "[concat('http://',variables('newStorageAccountName'),'.blob.core.windows.net/',variables('vmStorageAccountContainerName'),'/',variables('OSDiskName'), copyIndex(), '.vhd')]"
+              "uri": "[concat('http://',variables('newStorageAccountName'),'.blob.core.windows.net/',variables('vmStorageAccountContainerName'),'/',variables('OSDiskName'), copyIndex(), '-clu.vhd')]"
             },
             "caching": "ReadWrite",
             "createOption": "FromImage"
@@ -401,7 +395,7 @@
           "fileUris": "[variables('bootstrapFiles')]"
         },
         "protectedSettings": {
-          "commandToExecute": "[concat('sh bootstrap_hazelcast ', parameters('clusterUserName'), ' ', parameters('clusterPassword'), ' ', parameters('clusterVersion'), ' ', parameters('instanceCount'), ' ', parameters('licenseKey'), ' ', parameters('manCenterURL'), ' ', parameters('customJar') )]"
+          "commandToExecute": "[concat('sh bootstrap_hazelcast ', parameters('clusterUserName'), ' ', parameters('clusterPassword'), ' ', parameters('clusterVersion'), ' ', parameters('instanceCount'), ' ', parameters('licenseKey'), ' ', variables('manCenterUrlParam'), ' ', parameters('customJar') )]"
         }
       },
       "copy": {
