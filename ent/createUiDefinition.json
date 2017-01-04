@@ -54,7 +54,7 @@
                         "osPlatform": "Linux"
                     },
                     {
-                        "name": "manCenterURL",
+                        "name": "dnsAndPublicIP",
                         "type": "Microsoft.Network.PublicIpAddressCombo",
                         "label": {
                             "publicIpAddress": "Public IP address for Man Center",
@@ -298,7 +298,6 @@
             "adminPassword": "[basics('SSHCredentials').password]",
             "sshPublicKey": "[basics('SSHCredentials').sshPublicKey]",
             "licenseKey": "[steps('infrastructureConfig').licenseKey]",
-            "manCenterURL": "[steps('infrastructureConfig').manCenterURL]",
             "clusterUserName": "[steps('infrastructureConfig').clusterUserName]",
             "clusterPassword": "[steps('infrastructureConfig').clusterPassword]",
             "clusterVersion": "[steps('infrastructureConfig').clusterVersion]",
