@@ -221,6 +221,7 @@
                         "type": "Microsoft.Storage.StorageAccountSelector",
                         "label": "Storage account",
                         "defaultValue": {
+                            "name": "[replace(guid(), '-', '')]",
                             "type": "Standard_LRS"
                         },
                         "constraints": {
