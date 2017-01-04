@@ -38,12 +38,6 @@
         "description": "License Key for Enterprise to be installed. For a trial key: https://hazelcast.com/hazelcast-enterprise-download/trial/"
       }
     },
-    "manCenterURL": {
-      "type": "string",
-      "metadata": {
-        "description": "The URL this cluster will use to connect to Management Center."
-      }
-    },
     "clusterVersion": {
       "type": "string",
       "metadata": {
@@ -117,6 +111,9 @@
         "description": ""
       }
     },
+    "manCenterURL": {
+      "type": "string"
+    },
     "publicIPAddressName": {
       "type": "string"
     },
@@ -178,7 +175,7 @@
     "vnetID": "[resourceId('Microsoft.Network/virtualNetworks',variables('virtualNetworkName'))]",
     "sshKeyPath": "[concat('/home/',parameters('adminUsername'),'/.ssh/authorized_keys')]",
     "subnetRef": "[concat(variables('vnetID'),'/subnets/',variables('subnetName'))]",
-    "manCenterUrlParam": "[concat(parameters('manCenterURL'), ':8080/mancenter')]",
+    "manCenterUrlParam": "[concat(parameters('manCenterURL'), '.', parameters('location'), '.cloudapp.azure.com:8080/mancenter')]",
     "ComputeapiVersion": "2016-03-30",
     "NetworkapiVersion": "2016-10-01",
     "StorageapiVersion": "2016-05-01",
