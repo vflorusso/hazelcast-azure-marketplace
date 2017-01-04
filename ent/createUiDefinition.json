@@ -311,6 +311,7 @@
             "instanceCount": "[steps('infrastructureConfig').vmCount]",
             "publicIPAddressName": "[steps('infrastructureConfig').dnsAndPublicIP.name]",
             "publicIPNewOrExisting": "[steps('infrastructureConfig').dnsAndPublicIP.newOrExistingOrNone]",
+            "manCenterURL": "[steps('infrastructureConfig').dnsAndPublicIP.domainNameLabel]",
             "location": "[location()]"
         }
     }
