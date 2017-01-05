@@ -1,0 +1,27 @@
+#!/bin/bash
+
+#set default version if not supplied
+if [ -z "$1" ]
+  then
+    VERSION=3.7.3
+  else
+    VERSION=$1
+fi
+
+if [ "$VERSION" = "3.6.4" ] || [ "$VERSION" = "3.6.5" ]
+  then
+    # 3.6.4
+    wget http://download.hazelcast.com/enterprise/hazelcast-enterprise-3.6.4.tar.gz
+    tar -xvzf hazelcast-enterprise-3.6.4.tar.gz
+    mv home/ubuntu/files/downloads/hazelcast-enterprise-3.6.4/ ./
+    rm -rf ./hazelcast-enterprise-3.6.4.tar.gz
+    rm -rf ./home
+    cp -R `pwd`/hazelcast-enterprise-3.6.4/* /var/hazelcast
+    chmod a+x /var/hazelcast/bin/*sh
+  else
+    wget http://download.hazelcast.com/enterprise/hazelcast-enterprise-$VERSION.tar.gz
+    tar -xvzf hazelcast-enterprise-$VERSION.tar.gz
+    rm -rf ./hazelcast-enterprise-$VERSION.tar.gz
+    cp -R `pwd`/hazelcast-enterprise-$VERSION/* /var/hazelcast
+    chmod a+x /var/hazelcast/bin/*sh
+fi

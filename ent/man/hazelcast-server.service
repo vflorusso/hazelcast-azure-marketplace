@@ -1,0 +1,9 @@
+[Unit]
+Description=Hazelcast In-Memory Data Grid
+
+[Service]
+WorkingDirectory=/var/hazelcast/mancenter
+ExecStart=/var/hazelcast/mancenter/startManCenter.sh
+StandardOutput=syslog
+StandardError=syslog
+

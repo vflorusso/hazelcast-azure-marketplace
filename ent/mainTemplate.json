@@ -180,17 +180,17 @@
     "NetworkapiVersion": "2016-10-01",
     "StorageapiVersion": "2016-05-01",
     "bootstrapFilesCluster": [
-      "[concat(parameters('templateBaseUrl'), '/clu/bootstrap_hazelcast')]",
-      "[concat(parameters('templateBaseUrl'), '/clu/hazelcast')]",
-      "[concat(parameters('templateBaseUrl'), '/clu/hazelcast-server.conf')]",
-      "[concat(parameters('templateBaseUrl'), '/clu/hazelcast-server.service')]",
-      "[concat(parameters('templateBaseUrl'), '/clu/hazelcast.xml')]",
-      "[concat(parameters('templateBaseUrl'), '/clu/install_hazelcast')]",
-      "[concat(parameters('templateBaseUrl'), '/clu/download')]",
-      "[concat(parameters('templateBaseUrl'), '/clu/hazelcast-server.conf')]",
-      "[concat(parameters('templateBaseUrl'), '/clu/logging.properties')]",
-      "[concat(parameters('templateBaseUrl'), '/clu/modify_configuration')]",
-      "[concat(parameters('templateBaseUrl'), '/clu/pom.xml')]"
+      "[concat(parameters('templateBaseUrl'), '/ent/bootstrap_hazelcast')]",
+      "[concat(parameters('templateBaseUrl'), '/ent/hazelcast')]",
+      "[concat(parameters('templateBaseUrl'), '/ent/hazelcast-server.conf')]",
+      "[concat(parameters('templateBaseUrl'), '/ent/hazelcast-server.service')]",
+      "[concat(parameters('templateBaseUrl'), '/ent/hazelcast.xml')]",
+      "[concat(parameters('templateBaseUrl'), '/ent/install_hazelcast')]",
+      "[concat(parameters('templateBaseUrl'), '/ent/download')]",
+      "[concat(parameters('templateBaseUrl'), '/ent/hazelcast-server.conf')]",
+      "[concat(parameters('templateBaseUrl'), '/ent/logging.properties')]",
+      "[concat(parameters('templateBaseUrl'), '/ent/modify_configuration')]",
+      "[concat(parameters('templateBaseUrl'), '/ent/pom.xml')]"
     ],
     "bootstrapFilesMan": [
       "[concat(parameters('templateBaseUrl'), '/man/bootstrap_hazelcast')]",
