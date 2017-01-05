@@ -179,18 +179,31 @@
     "ComputeapiVersion": "2016-03-30",
     "NetworkapiVersion": "2016-10-01",
     "StorageapiVersion": "2016-05-01",
-    "bootstrapFiles": [
-      "[concat(parameters('templateBaseUrl'), '/bootstrap_hazelcast')]",
-      "[concat(parameters('templateBaseUrl'), '/hazelcast')]",
-      "[concat(parameters('templateBaseUrl'), '/hazelcast-server.conf')]",
-      "[concat(parameters('templateBaseUrl'), '/hazelcast-server.service')]",
-      "[concat(parameters('templateBaseUrl'), '/hazelcast.xml')]",
-      "[concat(parameters('templateBaseUrl'), '/install_hazelcast')]",
-      "[concat(parameters('templateBaseUrl'), '/download')]",
-      "[concat(parameters('templateBaseUrl'), '/hazelcast-server.conf')]",
-      "[concat(parameters('templateBaseUrl'), '/logging.properties')]",
-      "[concat(parameters('templateBaseUrl'), '/modify_configuration')]",
-      "[concat(parameters('templateBaseUrl'), '/pom.xml')]"
+    "bootstrapFilesCluster": [
+      "[concat(parameters('templateBaseUrl'), '/clu/bootstrap_hazelcast')]",
+      "[concat(parameters('templateBaseUrl'), '/clu/hazelcast')]",
+      "[concat(parameters('templateBaseUrl'), '/clu/hazelcast-server.conf')]",
+      "[concat(parameters('templateBaseUrl'), '/clu/hazelcast-server.service')]",
+      "[concat(parameters('templateBaseUrl'), '/clu/hazelcast.xml')]",
+      "[concat(parameters('templateBaseUrl'), '/clu/install_hazelcast')]",
+      "[concat(parameters('templateBaseUrl'), '/clu/download')]",
+      "[concat(parameters('templateBaseUrl'), '/clu/hazelcast-server.conf')]",
+      "[concat(parameters('templateBaseUrl'), '/clu/logging.properties')]",
+      "[concat(parameters('templateBaseUrl'), '/clu/modify_configuration')]",
+      "[concat(parameters('templateBaseUrl'), '/clu/pom.xml')]"
+    ],
+    "bootstrapFilesMan": [
+      "[concat(parameters('templateBaseUrl'), '/man/bootstrap_hazelcast')]",
+      "[concat(parameters('templateBaseUrl'), '/man/hazelcast')]",
+      "[concat(parameters('templateBaseUrl'), '/man/hazelcast-server.conf')]",
+      "[concat(parameters('templateBaseUrl'), '/man/hazelcast-server.service')]",
+      "[concat(parameters('templateBaseUrl'), '/man/hazelcast.xml')]",
+      "[concat(parameters('templateBaseUrl'), '/man/install_hazelcast')]",
+      "[concat(parameters('templateBaseUrl'), '/man/download')]",
+      "[concat(parameters('templateBaseUrl'), '/man/hazelcast-server.conf')]",
+      "[concat(parameters('templateBaseUrl'), '/man/logging.properties')]",
+      "[concat(parameters('templateBaseUrl'), '/man/modify_configuration')]",
+      "[concat(parameters('templateBaseUrl'), '/man/pom.xml')]"
     ]
   },
   "resources": [
@@ -376,7 +389,7 @@
     },
     {
       "type": "Microsoft.Compute/virtualMachines/extensions",
-      "name": "[concat(variables('vmName'), copyIndex(),'/initHazelcast')]",
+      "name": "[concat(variables('vmName'),'0/initHazelcast')]",
       "apiVersion": "[variables('ComputeapiVersion')]",
       "location": "[parameters('location')]",
       "dependsOn": [
@@ -384,12 +397,34 @@
         "[concat('Microsoft.Compute/virtualMachines/',variables('vmName'), '0')]"
       ],
       "properties": {
-        "autoUpgradeMinorVersion": true,
-        "publisher": "Microsoft.OSTCExtensions",
-        "type": "CustomScriptForLinux",
+        "publisher": "Microsoft.Azure.Extensions",
+        "type": "CustomScript",
         "typeHandlerVersion": "2.0",
+        "autoUpgradeMinorVersion": true,
         "settings": {
-          "fileUris": "[variables('bootstrapFiles')]"
+          "fileUris": "[variables('bootstrapFilesMan')]"
+        },
+        "protectedSettings": {
+          "commandToExecute": "[concat('sh bootstrap_hazelcast ', parameters('clusterUserName'), ' ', parameters('clusterPassword'), ' ', parameters('clusterVersion'), ' ', parameters('instanceCount'), ' ', parameters('licenseKey'), ' ', variables('manCenterUrlParam'), ' ', parameters('customJar') )]"
+        }
+      }
+    },
+    {
+      "type": "Microsoft.Compute/virtualMachines/extensions",
+      "name": "[concat(variables('vmName'), copyIndex(1),'/initHazelcast')]",
+      "apiVersion": "[variables('ComputeapiVersion')]",
+      "location": "[parameters('location')]",
+      "dependsOn": [
+        "createVms",
+        "[concat('Microsoft.Compute/virtualMachines/',variables('vmName'), '0')]"
+      ],
+      "properties": {
+        "publisher": "Microsoft.Azure.Extensions",
+        "type": "CustomScript",
+        "typeHandlerVersion": "2.0",
+        "autoUpgradeMinorVersion": true,
+        "settings": {
+          "fileUris": "[variables('bootstrapFilesCluster')]"
         },
         "protectedSettings": {
           "commandToExecute": "[concat('sh bootstrap_hazelcast ', parameters('clusterUserName'), ' ', parameters('clusterPassword'), ' ', parameters('clusterVersion'), ' ', parameters('instanceCount'), ' ', parameters('licenseKey'), ' ', variables('manCenterUrlParam'), ' ', parameters('customJar') )]"
@@ -397,7 +432,7 @@
       },
       "copy": {
         "name": "createExtensions",
-        "count": "[parameters('instanceCount')]"
+        "count": "[sub(parameters('instanceCount'), 1)]"
       }
     }
   ]
