@@ -175,7 +175,7 @@
     "vnetID": "[resourceId('Microsoft.Network/virtualNetworks',variables('virtualNetworkName'))]",
     "sshKeyPath": "[concat('/home/',parameters('adminUsername'),'/.ssh/authorized_keys')]",
     "subnetRef": "[concat(variables('vnetID'),'/subnets/',variables('subnetName'))]",
-    "manCenterUrlParam": "[concat(parameters('manCenterURL'), '.', parameters('location'), '.cloudapp.azure.com:8080/mancenter')]",
+    "manCenterUrlParam": "[concat('http://', parameters('manCenterURL'), '.', parameters('location'), '.cloudapp.azure.com:8080/mancenter')]",
     "ComputeapiVersion": "2016-03-30",
     "NetworkapiVersion": "2016-10-01",
     "StorageapiVersion": "2016-05-01",
