@@ -405,7 +405,7 @@
           "fileUris": "[variables('bootstrapFilesMan')]"
         },
         "protectedSettings": {
-          "commandToExecute": "[concat('sh bootstrap_hazelcast ', parameters('clusterUserName'), ' ', parameters('clusterPassword'), ' ', parameters('clusterVersion'), ' ', parameters('instanceCount'), ' ', parameters('licenseKey'), ' ', variables('manCenterUrlParam'), ' ', parameters('customJar') )]"
+	  "commandToExecute": "[concat('sh bootstrap_hazelcast ', parameters('clusterVersion'), ' ', parameters('licenseKey') )]"
         }
       }
     },
