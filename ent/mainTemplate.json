@@ -142,7 +142,7 @@
     "imageOffer": "UbuntuServer",
     "OSDiskName": "hazelcastosdisk",
     "nicName": "myVMNic",
-    "addressPrefix": "10.0.0.0/16",
+    "addressPrefix": "10.0.0.0/20",
     "subnetName": "Subnet",
     "subnetPrefix": "10.0.1.0/24",
     "storageAccountType": "Standard_LRS",
@@ -151,6 +151,7 @@
     "vmStorageAccountContainerName": "vhds",
     "vmName": "hazelcast",
     "virtualNetworkName": "hazelcastVNet",
+    "hzMcNSecurityGroup": "hzmcNSG",
     "osProfile": "[variables(concat('osProfile', parameters('authenticationType')))]",
     "osProfilepassword": {
       "adminPassword": "[parameters('adminPassword')]",
@@ -231,9 +232,64 @@
     },
     {
       "apiVersion": "[variables('NetworkapiVersion')]",
+      "type": "Microsoft.Network/networkSecurityGroups",
+      "name": "[variables('hzMcNSecurityGroup')]",
+      "location": "[parameters('location')]",
+      "tags": {
+        "displayName": "HZ-MC-NSG"
+      },
+      "properties": {
+        "securityRules": [
+          {
+            "name": "HZ-MC-NSG-SSH",
+            "properties": {
+              "protocol": "TCP",
+              "sourcePortRange": "*",
+              "destinationPortRange": "22",
+              "sourceAddressPrefix": "*",
+              "destinationAddressPrefix": "*",
+              "access": "Allow",
+              "priority": 101,
+              "direction": "Inbound"
+            }
+          },
+          {
+            "name": "HZ-MC-NSG-WEB",
+            "properties": {
+              "protocol": "TCP",
+              "sourcePortRange": "*",
+              "destinationPortRange": "8080",
+              "sourceAddressPrefix": "*",
+              "destinationAddressPrefix": "*",
+              "access": "Allow",
+              "priority": 101,
+              "direction": "Inbound"
+            }
+          },
+          {
+            "name": "HZ-NSG-Internal",
+            "properties": {
+              "protocol": "TCP",
+              "sourcePortRange": "*",
+              "destinationPortRange": "*",
+              "sourceAddressPrefix": "[variables('addressPrefix')]",
+              "destinationAddressPrefix": "*",
+              "access": "Allow",
+              "priority": 101,
+              "direction": "Inbound"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "apiVersion": "[variables('NetworkapiVersion')]",
       "type": "Microsoft.Network/virtualNetworks",
       "name": "[variables('virtualNetworkName')]",
       "location": "[parameters('location')]",
+      "dependsOn": [
+        "[concat('Microsoft.Network/networkSecurityGroups/', variables('hzMcNSecurityGroup'))]"
+      ],
       "properties": {
         "addressSpace": {
           "addressPrefixes": [
@@ -244,7 +300,10 @@
           {
             "name": "[variables('subnetName')]",
             "properties": {
-              "addressPrefix": "[variables('subnetPrefix')]"
+              "addressPrefix": "[variables('subnetPrefix')]",
+              "networkSecurityGroup": {
+                "id": "[resourceId('Microsoft.Network/networkSecurityGroups', variables('hzMcNSecurityGroup'))]"
+              }
             }
           }
         ]
@@ -405,7 +464,7 @@
           "fileUris": "[variables('bootstrapFilesMan')]"
         },
         "protectedSettings": {
-	  "commandToExecute": "[concat('sh bootstrap_hazelcast ', parameters('clusterVersion'), ' ', parameters('licenseKey') )]"
+          "commandToExecute": "[concat('sh bootstrap_hazelcast ', parameters('clusterVersion'), ' ', parameters('licenseKey') )]"
         }
       }
     },

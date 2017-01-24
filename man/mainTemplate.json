@@ -266,6 +266,19 @@
               "priority": 101,
               "direction": "Inbound"
             }
+          },
+          {
+            "name": "HZ-NSG-Internal",
+            "properties": {
+              "protocol": "TCP",
+              "sourcePortRange": "*",
+              "destinationPortRange": "*",
+              "sourceAddressPrefix": "[variables('addressPrefix')]",
+              "destinationAddressPrefix": "*",
+              "access": "Allow",
+              "priority": 101,
+              "direction": "Inbound"
+            }
           }
         ]
       }

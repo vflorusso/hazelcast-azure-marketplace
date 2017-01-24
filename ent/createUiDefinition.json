@@ -20,9 +20,9 @@
                     "sshPublicKey": "SSH public key"
                 },
                 "toolTip": {
-                    "authenticationType": "",
-                    "password": "",
-                    "sshPublicKey": ""
+                    "authenticationType": "Choose the authentication type between SSH public key and Password",
+                    "password": "Provide a complex password",
+                    "sshPublicKey": "Provide an OpenSSH public key, which can be generated with tools like ssh-keygen on Linux and OS X, or PuTTYGen on Windows."
                 },
                 "constraints": {
                     "required": true
@@ -49,7 +49,9 @@
                         "label": "License",
                         "toolTip": "License Key for Enterprise to be installed. For a trial key: https://hazelcast.com/hazelcast-enterprise-download/trial/",
                         "constraints": {
-                            "required": true
+                            "required": true,
+                            "regex": "[A-Za-z#_0-9]{60,}",
+                            "validationMessage": "The supplied value doesn't appear to be a valid Hazelcast License. For a trial key: https://hazelcast.com/hazelcast-enterprise-download/trial/."
                         },
                         "osPlatform": "Linux"
                     },
@@ -73,7 +75,8 @@
                             "domainNameLabel": ""
                         },
                         "options": {
-                            "hideNone": true
+                            "hideNone": true,
+                            "hideExisting": true
                         }
                     },
                     {
@@ -231,6 +234,9 @@
                                 "Standard_GRS",
                                 "Standard_RAGRS"
                             ]
+                        },
+                        "options": {
+                            "hideExisting": true
                         }
                     },
                     {
@@ -261,11 +267,11 @@
                         "type": "Microsoft.Compute.SizeSelector",
                         "label": "Virtual machine size",
                         "toolTip": "The size of the virtual machine for the domain controller.",
-                        "defaultValue": "Standard_D1",
+                        "defaultValue": "Standard_D1_v2",
                         "recommendedSizes": [
-                            "Standard_D1",
-                            "Standard_D2",
-                            "Standard_D3"
+                            "Standard_D1_v2",
+                            "Standard_D2_v2",
+                            "Standard_D3_v2"
                         ],
                         "constraints": {
                             "allowedSizes": [
