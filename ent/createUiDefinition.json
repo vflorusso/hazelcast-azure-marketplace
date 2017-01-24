@@ -70,7 +70,7 @@
                             }
                         },
                         "defaultValue": {
-                            "publicIpAddressName": "concat('hzentpip-',substring(replace(guid(), '-', ''),0,4))",
+                            "publicIpAddressName": "[concat('hzentpip-',substring(replace(guid(), '-', ''),0,4))]",
                             "domainNameLabel": ""
                         },
                         "options": {
