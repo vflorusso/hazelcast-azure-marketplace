@@ -29,7 +29,8 @@
                 },
                 "options": {
                     "hideConfirmation": false
-                }
+                },
+                "osPlatform": "Linux"
             }
         ],
         "steps": [
