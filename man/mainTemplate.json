@@ -100,31 +100,22 @@
     }
   },
   "variables": {
-    "authenticationType": "",
-    "licenseKey": "",
-    "clusterVersion": "",
-    "storageAccountNewOrExisting": "",
-    "storageAccountName": "",
-    "existingStorageAccountRG": "",
-    "dnsPrefix": "",
-    "publicIPNewOrExisting": "",
-    "location": "",
     "ComputeapiVersion": "2016-03-30",
     "NetworkapiVersion": "2016-10-01",
     "StorageapiVersion": "2016-05-01",
     "imagePublisher": "Canonical",
     "imageOffer": "UbuntuServer",
-    "OSDiskName": "osdiskforlinuxsimple",
+    "OSDiskName": "hzmancenterosdisk",
     "nicName": "hzVMNic",
-    "addressPrefix": "10.0.0.0/16",
+    "addressPrefix": "10.0.0.0/20",
     "subnetName": "Subnet",
     "subnetPrefix": "10.0.0.0/24",
-    "storageAccountType": "Standard_LRS",
     "publicIPAddressName": "myPublicIP",
     "publicIPAddressType": "Dynamic",
     "vmStorageAccountContainerName": "vhds",
     "vmName": "ManCenterVM",
     "virtualNetworkName": "hzVNET",
+    "hzMcNSecurityGroup": "hzmcNSG",
     "vnetID": "[resourceId('Microsoft.Network/virtualNetworks',variables('virtualNetworkName'))]",
     "subnetRef": "[concat(variables('vnetID'),'/subnets/',variables('subnetName'))]",
     "osProfile": "[variables(concat('osProfile', parameters('authenticationType')))]",
@@ -178,7 +169,7 @@
       "apiVersion": "[variables('NetworkapiVersion')]",
       "type": "Microsoft.Network/publicIPAddresses",
       "name": "[variables('publicIPAddressName')]",
-      "location": "[resourceGroup().location]",
+      "location": "[parameters('location')]",
       "properties": {
         "publicIPAllocationMethod": "[variables('publicIPAddressType')]",
         "dnsSettings": {
@@ -190,7 +181,10 @@
       "apiVersion": "[variables('ComputeapiVersion')]",
       "type": "Microsoft.Network/virtualNetworks",
       "name": "[variables('virtualNetworkName')]",
-      "location": "[resourceGroup().location]",
+      "location": "[parameters('location')]",
+      "dependsOn": [
+        "[concat('Microsoft.Network/networkSecurityGroups/', variables('hzMcNSecurityGroup'))]"
+      ],
       "properties": {
         "addressSpace": {
           "addressPrefixes": [
@@ -201,7 +195,10 @@
           {
             "name": "[variables('subnetName')]",
             "properties": {
-              "addressPrefix": "[variables('subnetPrefix')]"
+              "addressPrefix": "[variables('subnetPrefix')]",
+              "networkSecurityGroup": {
+                "id":"[resourceId('Microsoft.Network/networkSecurityGroups', variables('hzMcNSecurityGroup'))]"
+              }
             }
           }
         ]
@@ -211,7 +208,7 @@
       "apiVersion": "[variables('NetworkapiVersion')]",
       "type": "Microsoft.Network/networkInterfaces",
       "name": "[variables('nicName')]",
-      "location": "[resourceGroup().location]",
+      "location": "[parameters('location')]",
       "dependsOn": [
         "[concat('Microsoft.Network/publicIPAddresses/', variables('publicIPAddressName'))]",
         "[concat('Microsoft.Network/virtualNetworks/', variables('virtualNetworkName'))]"
@@ -235,10 +232,49 @@
       }
     },
     {
+      "apiVersion": "[variables('NetworkapiVersion')]",
+      "type": "Microsoft.Network/networkSecurityGroups",
+      "name": "[variables('hzMcNSecurityGroup')]",
+      "location": "[parameters('location')]",
+      "tags": {
+        "displayName": "HZ-MC-NSG"
+      },
+      "properties": {
+        "securityRules": [
+          {
+            "name": "HZ-MC-NSG-SSH",
+            "properties": {
+              "protocol": "TCP",
+              "sourcePortRange": "*",
+              "destinationPortRange": "22",
+              "sourceAddressPrefix": "*",
+              "destinationAddressPrefix": "*",
+              "access": "Allow",
+              "priority": 101,
+              "direction": "Inbound"
+            }
+          },
+          {
+            "name": "HZ-MC-NSG-WEB",
+            "properties": {
+              "protocol": "TCP",
+              "sourcePortRange": "*",
+              "destinationPortRange": "8080",
+              "sourceAddressPrefix": "*",
+              "destinationAddressPrefix": "*",
+              "access": "Allow",
+              "priority": 101,
+              "direction": "Inbound"
+            }
+          }
+        ]
+      }
+    },
+    {
       "apiVersion": "[variables('ComputeapiVersion')]",
       "type": "Microsoft.Compute/virtualMachines",
       "name": "[variables('vmName')]",
-      "location": "[resourceGroup().location]",
+      "location": "[parameters('location')]",
       "dependsOn": [
         "[concat('Microsoft.Storage/storageAccounts/', parameters('storageAccountName'))]",
         "[concat('Microsoft.Network/networkInterfaces/', variables('nicName'))]"
@@ -277,7 +313,7 @@
       "type": "Microsoft.Compute/virtualMachines/extensions",
       "name": "[concat(variables('vmName'),'/newuserscript')]",
       "apiVersion": "[variables('ComputeapiVersion')]",
-      "location": "[resourceGroup().location]",
+      "location": "[parameters('location')]",
       "dependsOn": [
         "[concat('Microsoft.Storage/storageAccounts/', parameters('storageAccountName'))]",
         "[concat('Microsoft.Compute/virtualMachines/', variables('vmName'))]"
@@ -290,7 +326,7 @@
         "settings": {
           "fileUris": "[variables('bootstrapFiles')]"
         },
-        "protectedSettings":{
+        "protectedSettings": {
           "commandToExecute": "[concat('sh bootstrap_hazelcast ', parameters('clusterVersion'), ' ', parameters('licenseKey') )]"
         }
       }
