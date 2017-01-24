@@ -29,8 +29,7 @@
                 },
                 "options": {
                     "hideConfirmation": false
-                },
-                "osPlatform": "Linux"
+                }
             }
         ],
         "steps": [
@@ -60,7 +59,7 @@
                         "type": "Microsoft.Common.DropDown",
                         "label": "Hazelcast Version",
                         "defaultValue": "3.7.3",
-                        "toolTip": "",
+                        "toolTip": "Select Hazelcast version",
                         "constraints": {
                             "allowedValues": [
                                 {
@@ -123,7 +122,7 @@
                         "type": "Microsoft.Storage.StorageAccountSelector",
                         "label": "Storage account",
                         "defaultValue": {
-                            "name": "[substring(replace(guid(), '-', ''),0,20)]",                            
+                            "name": "[substring(replace(guid(), '-', ''),0,20)]",
                             "type": "Standard_LRS"
                         },
                         "constraints": {
@@ -142,7 +141,7 @@
                         "name": "ubuntuOSVersion",
                         "type": "Microsoft.Common.DropDown",
                         "label": "ubuntuOSVersion",
-                        "toolTip": "",
+                        "toolTip": "Select Ubuntu OS version",
                         "defaultValue": "14.04.4-LTS",
                         "constraints": {
                             "allowedValues": [

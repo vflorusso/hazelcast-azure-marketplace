@@ -52,8 +52,7 @@
                             "required": true,
                             "regex": "[A-Za-z#_0-9]{60,}",
                             "validationMessage": "The supplied value doesn't appear to be a valid Hazelcast License. For a trial key: https://hazelcast.com/hazelcast-enterprise-download/trial/."
-                        },
-                        "osPlatform": "Linux"
+                        }
                     },
                     {
                         "name": "dnsAndPublicIP",
@@ -84,7 +83,7 @@
                         "type": "Microsoft.Common.DropDown",
                         "label": "Hazelcast Version",
                         "defaultValue": "3.7.3",
-                        "toolTip": "",
+                        "toolTip": "Specify Hazelcast Version",
                         "constraints": {
                             "allowedValues": [
                                 {
@@ -146,7 +145,7 @@
                         "name": "customJar",
                         "type": "Microsoft.Common.FileUpload",
                         "label": "Custom Jar",
-                        "toolTip": "",
+                        "toolTip": "Provide a custom Jar",
                         "constraints": {
                             "required": false,
                             "accept": ".jar"
@@ -163,7 +162,7 @@
                         "type": "Microsoft.Common.DropDown",
                         "label": "Number of VMs",
                         "defaultValue": "3",
-                        "toolTip": "",
+                        "toolTip": "Select number of VMs for Hazelcast Cluster",
                         "constraints": {
                             "allowedValues": [
                                 {
@@ -243,7 +242,7 @@
                         "name": "ubuntuOSVersion",
                         "type": "Microsoft.Common.DropDown",
                         "label": "ubuntuOSVersion",
-                        "toolTip": "",
+                        "toolTip": "Choose Ubuntu OS version",
                         "defaultValue": "14.04.2-LTS",
                         "constraints": {
                             "allowedValues": [
@@ -266,7 +265,7 @@
                         "name": "vmSize",
                         "type": "Microsoft.Compute.SizeSelector",
                         "label": "Virtual machine size",
-                        "toolTip": "The size of the virtual machine for the domain controller.",
+                        "toolTip": "The size of the virtual machine for the Hazelcast nodes.",
                         "defaultValue": "Standard_D1_v2",
                         "recommendedSizes": [
                             "Standard_D1_v2",
