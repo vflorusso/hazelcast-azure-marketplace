@@ -52,8 +52,7 @@
                             "required": true,
                             "regex": "[A-Za-z#_0-9]{60,}",
                             "validationMessage": "The supplied value doesn't appear to be a valid Hazelcast License. For a trial key: https://hazelcast.com/hazelcast-enterprise-download/trial/."
-                        },
-                        "osPlatform": "Linux"
+                        }
                     },
                     {
                         "name": "clusterVersion",
@@ -127,7 +126,6 @@
                             "type": "Standard_LRS"
                         },
                         "constraints": {
-                            "required": true,
                             "allowedTypes": [
                                 "Standard_LRS",
                                 "Standard_GRS",
@@ -166,7 +164,6 @@
                         "type": "Microsoft.Compute.SizeSelector",
                         "label": "Virtual machine size",
                         "toolTip": "The size of the virtual machine for this management center.",
-                        "defaultValue": "Standard_D1_v2",
                         "recommendedSizes": [
                             "Standard_D1_v2",
                             "Standard_D2_v2",
