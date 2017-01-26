@@ -263,7 +263,7 @@
               "sourceAddressPrefix": "*",
               "destinationAddressPrefix": "*",
               "access": "Allow",
-              "priority": 101,
+              "priority": 102,
               "direction": "Inbound"
             }
           },
@@ -276,7 +276,7 @@
               "sourceAddressPrefix": "[variables('addressPrefix')]",
               "destinationAddressPrefix": "*",
               "access": "Allow",
-              "priority": 101,
+              "priority": 103,
               "direction": "Inbound"
             }
           }
